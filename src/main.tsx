@@ -1,10 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+
+import { Scheduler } from './componentes/calendario/Scheduler'
+import { ThemeProvider } from '@mui/material'
+import { SincoTheme } from './Theme'
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ThemeProvider theme={SincoTheme}>
+    <React.StrictMode>
+      <Scheduler />
+    </React.StrictMode>,
+  </ThemeProvider>
 )
