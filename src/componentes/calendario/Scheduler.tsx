@@ -153,7 +153,7 @@ export const Scheduler: React.FC = () => {
                     <Button endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Año</Button>
                     <Button endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Mes</Button>
                     <Button size="small" color="primary" variant='contained' onClick={toggleDialog}>Nuevo evento</Button>
-                    <Drawer
+                    {/* <Drawer
                         open={open}
                         showActions={true}
                         width='30%'
@@ -197,7 +197,7 @@ export const Scheduler: React.FC = () => {
                                 />
                             </Box>
                         </Box>
-                    </Drawer>
+                    </Drawer> */}
                 </Box>
             </Box>
 
