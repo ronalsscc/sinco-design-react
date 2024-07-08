@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import moment, { Moment } from 'moment';
-import { Box, Button, Card, Chip, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Stack, Typography } from "@mui/material";
 import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
 import { SincoTheme } from '../../Theme';
-import { Drawer } from '@sinco/react';
+import { NuevoEvento } from './NuevoEvento';
 
-const CambioDeFecha = () => {
-    const [fechaActual, cambiarFechaActual] = useState<Moment>(moment());
+
+
+const CambioDeFecha = ({ fechaActual, cambiarFechaActual }) => {
 
     const mesAnterior = useCallback(() => {
         cambiarFechaActual(prevDate => moment(prevDate).subtract(1, 'months'));
@@ -32,11 +33,9 @@ const CambioDeFecha = () => {
     );
 };
 
-const Calendario = () => {
+const Calendario = ({ fechaActual }) => {
     const obtenerDiasAMostrar = useCallback(() => {
-        let diasIteracion: Moment[] = [];
-        const fechaActual = moment();
-
+        let diasIteracion = [];
         const primerdiaDelMes = moment(fechaActual).startOf("month");
         const ultimoDiaMes = moment(fechaActual).endOf("month");
 
@@ -53,7 +52,7 @@ const Calendario = () => {
             }
         }
         return diasIteracion;
-    }, []);
+    }, [fechaActual]);
 
     const diasDeLaSemana = moment.weekdays();
 
@@ -115,21 +114,13 @@ const Calendario = () => {
     );
 };
 
-const useDialog = () => {
+export const Scheduler: React.FC = () => {
     const [open, setOpen] = useState(false);
+    const [fechaActual, cambiarFechaActual] = useState<Moment>(moment());
 
     const toggleDialog = useCallback(() => {
         setOpen(prevOpen => !prevOpen);
     }, []);
-
-    return {
-        open,
-        toggleDialog,
-    };
-};
-
-export const Scheduler: React.FC = () => {
-    const { open, toggleDialog } = useDialog();
 
     return (
         <Box
@@ -153,56 +144,12 @@ export const Scheduler: React.FC = () => {
                     <Button endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Año</Button>
                     <Button endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Mes</Button>
                     <Button size="small" color="primary" variant='contained' onClick={toggleDialog}>Nuevo evento</Button>
-                    {/* <Drawer
-                        open={open}
-                        showActions={true}
-                        width='30%'
-                        onClose={toggleDialog}
-                        backgroundColor={SincoTheme.palette.background.paper}
-                        title='Nuevo evento'
-                        color='white'
-                        actions={
-                            <Box display="flex" gap={1}>
-                                <Button variant='contained' onClick={toggleDialog}>Cerrar</Button>
-                                <Button>Cerrar</Button>
-                            </Box>
-                        }
-                    >
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            gap={1}
-                            p={1}
-                            textAlign="center"
-                        >
-                            <Typography variant='body1' color={SincoTheme.palette.text.secondary}>
-                                Ingresa datos del evento
-                            </Typography>
-                            <TextField
-                                label="Nombre del evento"
-                                size="small"
-                                variant="outlined"
-                            />
-                            <Box display="flex" gap={1}>
-                                <TextField
-                                    label=""
-                                    size="small"
-                                    type="number"
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    label=""
-                                    size="small"
-                                    variant="outlined"
-                                />
-                            </Box>
-                        </Box>
-                    </Drawer> */}
                 </Box>
             </Box>
 
-            <CambioDeFecha />
-            <Calendario />
+            <CambioDeFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
+            <Calendario fechaActual={fechaActual} />
+            <NuevoEvento open={open} toggleDialog={toggleDialog} />
         </Box>
     );
 };
