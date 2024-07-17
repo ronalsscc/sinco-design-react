@@ -1,11 +1,11 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 
 export interface CambioFechaProps {
     fechaActual: Moment;
     cambiarFechaActual?: (nuevaFecha: Moment) => void;
 }
 
-export interface NuevoEventoProps {
+export interface FormularioProps {
     open: boolean;
     toggleDialog: () => void;
 }
@@ -16,3 +16,5 @@ export interface UsuarioProps {
     cargo: string;
     avatar: string;
 }
+
+

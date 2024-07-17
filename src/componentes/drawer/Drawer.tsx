@@ -75,7 +75,7 @@ export const DrawerComponent = ({
           alignItems="center"
           direction="row"
           py={1.5}
-          px={1}
+          px={2}
           bgcolor={headerColor}
         >
           <Typography color={color} variant="h6">

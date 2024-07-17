@@ -7,7 +7,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
 import { DateRangePicker } from '@mui/x-date-pickers-pro';
-import { Drawer, NuevoEventoProps, UsuarioProps } from '../..';
+import { Drawer, FormularioProps, UsuarioProps } from '../..';
 import { HighlightOff } from '@mui/icons-material';
 
 
@@ -19,7 +19,7 @@ export const Usuarios: UsuarioProps[] = [
 ];
 
 
-export const NuevoEvento: React.FC<NuevoEventoProps> = ({ open, toggleDialog }) => {
+export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) => {
 
     const [fechaActual, cambiarFecha] = React.useState<moment.Moment | null>(moment('2022-04-17T15:30'));
     const [evento, cambiarEvento] = React.useState('');
@@ -43,8 +43,8 @@ export const NuevoEvento: React.FC<NuevoEventoProps> = ({ open, toggleDialog }) 
             title='Nuevo evento'
             actions={
                 <Box display="flex" gap={1}>
-                    <Button variant='text' onClick={toggleDialog}>Cancelar</Button>
-                    <Button variant='contained' onClick={toggleDialog} >Guardar</Button>
+                    <Button variant='text' size='small' onClick={toggleDialog}>Cancelar</Button>
+                    <Button variant='contained' size='small' onClick={toggleDialog} >Guardar</Button>
                 </Box>
             }
             children={
@@ -95,7 +95,7 @@ export const NuevoEvento: React.FC<NuevoEventoProps> = ({ open, toggleDialog }) 
 
                         <Autocomplete
                             options={Usuarios}
-                            getOptionLabel={(option) => option.cargo}
+                            getOptionLabel={(option) => option.name}
                             value={usuario}
                             renderInput={(params) => <TextField {...params} placeholder='Buscar por nombre' variant="outlined" />}
                             renderOption={(props, option) => (
@@ -111,12 +111,11 @@ export const NuevoEvento: React.FC<NuevoEventoProps> = ({ open, toggleDialog }) 
                                             <Typography variant="overline">CT</Typography>
                                         </Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary={option.name} secondary={option.cargo} />
+                                    <ListItemText primary={option.name} secondary={option.name} />
                                 </ListItem>
                             )}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                         />
-
                     </Stack>
 
                     <Stack gap={2}>
@@ -126,7 +125,6 @@ export const NuevoEvento: React.FC<NuevoEventoProps> = ({ open, toggleDialog }) 
 
                         <TextField
                             id="outlined-textarea"
-                            label=""
                             placeholder="Descripcion del evento"
                             multiline
                         />

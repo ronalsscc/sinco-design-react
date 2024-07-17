@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import moment, { Moment } from 'moment';
-import { Box, Button, Card, Chip, Stack, Typography, Menu, MenuItem, TextField } from "@mui/material";
-import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
+import moment, { Moment } from 'moment/';
+import { CambioFechaProps, Drawer, Evento } from '..';
 import { SincoTheme } from '../../Theme';
-import { CambioFechaProps } from '..';
-import { NuevoEvento } from './eventos/NuevoEvento';
-import { Evento } from './eventos/evento';
+import { Formulario } from './eventos/Formulario';
+import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, DialogTitle, Dialog, DialogContent, DialogActions } from "@mui/material";
+import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
 
-const CambioDeFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+import 'moment/min/moment-with-locales';
+moment.locale('es');
+
+const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
     const mesAnterior = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
     }, [fechaActual, cambiarFechaActual]);
@@ -33,20 +35,21 @@ const CambioDeFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAc
 };
 
 const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
+
     const obtenerDiasAMostrar = useCallback(() => {
         let diasIteracion = [];
-        const primerdiaDelMes = moment(fechaActual).startOf("month");
+        const primerDiaDelMes = moment(fechaActual).startOf("month");
         const ultimoDiaMes = moment(fechaActual).endOf("month");
 
-        for (let day = moment(primerdiaDelMes); day.isSameOrBefore(ultimoDiaMes); day.add(1, "day")) {
+        for (let day = moment(primerDiaDelMes); day.isSameOrBefore(ultimoDiaMes); day.add(1, "day")) {
             diasIteracion.push(moment(day));
         }
 
-        const primerdiaDelSiguienteMes = moment(fechaActual).add(1, "month").startOf("month");
+        const primerDiaDelSiguienteMes = moment(fechaActual).add(1, "month").startOf("month");
         const longitudDeDias = diasIteracion.length;
 
         if ((longitudDeDias / 7) % 1 !== 0) {
-            for (let day = moment(primerdiaDelSiguienteMes); day.day() <= (35 - longitudDeDias); day.add(1, "day")) {
+            for (let day = moment(primerDiaDelSiguienteMes); day.day() <= (31 - longitudDeDias); day.add(1, "day")) {
                 diasIteracion.push(moment(day));
             }
         }
@@ -74,27 +77,28 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                 ))}
             </Stack>
 
-            <Stack display='grid' gridTemplateColumns="repeat(7, 1fr)" gap={1}>
+            <Stack display='grid' gridTemplateColumns="repeat(7, 1fr)" gap={.5} p={.5}>
                 {obtenerDiasAMostrar().map((dia, index) => (
                     <Box key={index} sx={{
-                        backgroundColor: SincoTheme.palette.grey[50]
+                        backgroundColor: SincoTheme.palette.grey[50],
                     }}
-                        height="5.5rem"
+                        height="7rem"
                         boxSizing='border-box'
                         display='flex'
                         textAlign='center'
                         justifyContent='center'
                         alignItems='center'
-                        borderRadius={1}
                         flexDirection='column'
-                        overflow='hidden'
+                        borderRadius={1}
+                        p={1}
                     >
-                        <Stack width='100%' display='flex' justifyContent='flex-start' textAlign='start'>
+                        <Stack width='100%' display='flex' px={1} justifyContent='center' alignItems={"flex-start"}>
                             <Typography variant="body2" color='textSecondary' p={1}>{dia.date()}</Typography>
                         </Stack>
-                        <Stack height="90%" sx={{ overflowY: 'auto' }} gap={1} >
-                            <Evento hora='9:00 am' descripcion='COPASST' />
+                        <Stack height="100%" gap={1} width={"100%"} sx={{ overflowY: 'auto' }}  >
+                            <Evento hora='9:00 am' descripcion='Capacitacion Obligatoria' />
                         </Stack>
+
                     </Box>
                 ))}
             </Stack>
@@ -103,9 +107,12 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
 };
 
 export const Calendario: React.FC = () => {
+
     const [open, setOpen] = useState(false);
     const [anchorEl, cambiarAnchor] = useState<null | HTMLElement>(null);
+    const [anchorMesEl, cambiarAnchorMes] = useState<null | HTMLElement>(null);
     const [fechaActual, cambiarFechaActual] = useState<Moment>(moment());
+    const [mesSeleccionado, cambiarMesSeleccionado] = useState<number>(moment().month());
 
     const abrirCerrarDrawer = useCallback(() => {
         setOpen(prevOpen => !prevOpen);
@@ -115,8 +122,13 @@ export const Calendario: React.FC = () => {
         cambiarAnchor(evento.currentTarget);
     }, []);
 
+    const obtenerMesAMostrar = useCallback((evento: React.MouseEvent<HTMLButtonElement>) => {
+        cambiarAnchorMes(evento.currentTarget);
+    }, []);
+
     const cerrarMenu = useCallback(() => {
         cambiarAnchor(null);
+        cambiarAnchorMes(null);
     }, []);
 
     const obtenerAñoSeleccionado = useCallback((año: number) => {
@@ -124,7 +136,14 @@ export const Calendario: React.FC = () => {
         cerrarMenu();
     }, [fechaActual, cambiarFechaActual, cerrarMenu]);
 
+    const obtenerMesSeleccionado = useCallback((mes: number) => {
+        cambiarFechaActual(moment(fechaActual).month(mes));
+        cambiarMesSeleccionado(mes);
+        cerrarMenu();
+    }, [fechaActual, cambiarFechaActual, cerrarMenu]);
+
     const años = Array.from(new Array(15), (_valor, index) => moment().year() - index);
+    const meses = moment.months();
 
     return (
         <Box
@@ -147,24 +166,38 @@ export const Calendario: React.FC = () => {
                     <Button startIcon={<FilterList />} size="small" color="primary" variant='text'> Filtrar </Button>
                     <Button onClick={obtenerAñoAMostrar} endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Año</Button>
                     <Menu
+                        sx={{
+                            height: "350px",
+                            overflow: "auto",
+
+                        }}
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
                         onClose={cerrarMenu} >
                         {años.map((año) => (
-                            <MenuItem key={año} onClick={() => obtenerAñoSeleccionado(año)}>
+                            <MenuItem sx={{ width: "100%" }} key={año} onClick={() => obtenerAñoSeleccionado(año)}>
                                 {año}
                             </MenuItem>
                         ))}
-
                     </Menu>
-                    <Button endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Mes</Button>
+                    <Button onClick={obtenerMesAMostrar} endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Mes</Button>
+                    <Menu
+                        anchorEl={anchorMesEl}
+                        open={Boolean(anchorMesEl)}
+                        onClose={cerrarMenu} >
+                        {meses.map((mes, index) => (
+                            <MenuItem key={mes} onClick={() => obtenerMesSeleccionado(index)} selected={index === mesSeleccionado}>
+                                {mes}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                     <Button size="small" color="primary" variant='contained' onClick={abrirCerrarDrawer}>Nuevo evento</Button>
                 </Box>
             </Box>
 
-            <CambioDeFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
+            <ControlFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
             <ContenedorDias fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
-            <NuevoEvento open={open} toggleDialog={abrirCerrarDrawer} />
+            <Formulario open={open} toggleDialog={abrirCerrarDrawer} />
         </Box>
     );
 };
