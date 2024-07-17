@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment/';
 import { CambioFechaProps, Evento } from '..';
 import { SincoTheme } from '../../Theme';
 import { Formulario } from './eventos/Formulario';
-import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, DialogTitle, Dialog, DialogContent, DialogActions } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography, Menu, MenuItem } from "@mui/material";
 import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
 
 import 'moment/min/moment-with-locales';
@@ -61,7 +61,7 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
     const diasDeLaSemana = moment.weekdays();
 
     return (
-        <Box width='100%' height={"100%"}  maxHeight={"512px"} 
+        <Box width='100%' height={"100%"} maxHeight={"512px"}
             boxSizing='border-box' justifyContent="center" gap={0.5} flexWrap='wrap' sx={{ backgroundColor: 'transparent' }}>
             <Stack display='grid' height={"5%"} gridTemplateColumns="repeat(7, 1fr)" py={1}>
                 {diasDeLaSemana.map((dia, index) => (
@@ -80,11 +80,12 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                 ))}
             </Stack>
 
-            <Stack display='grid' height={"95%"} overflow={"auto"} gridTemplateColumns="repeat(7, 1fr)" gap={.5} p={.5}>
+            <Stack display='grid' height={"95%"} width={"100%"} overflow={"auto"} gridTemplateColumns="repeat(7, 1fr)" gap={.5} >
                 {obtenerDiasAMostrar().map((dia, index) => (
                     <Box key={index} sx={{
                         backgroundColor: SincoTheme.palette.grey[50],
                     }}
+                        // maxWidth="7.5rem"
                         height="7rem"
                         boxSizing='border-box'
                         display='flex'
@@ -95,10 +96,10 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         borderRadius={1}
                         p={1}
                     >
-                        <Stack width='100%' display='flex' px={1} justifyContent='center' alignItems={"flex-start"}>
+                        <Stack px={1} justifyContent='center' alignItems={"flex-start"}>
                             <Typography variant="body2" color='textSecondary' p={1}>{dia.date()}</Typography>
                         </Stack>
-                        <Stack height="100%"  width={"100%"} gap={1} sx={{ overflowY: 'auto' }}  >
+                        <Stack height="100%" width={"100%"} gap={1} sx={{ overflowY: 'auto' }}  >
                             <Evento hora='9:00 am' descripcion='Capacitacion Obligatoria' />
                             <Evento hora='9:00 am' descripcion='Capacitacion Obligatoria' />
                         </Stack>
