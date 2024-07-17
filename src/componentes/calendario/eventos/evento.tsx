@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Stack, Typography, Popper, Box, Divider } from "@mui/material";
+import { Card, Stack, Typography, Popper, Box, Divider, Tooltip } from "@mui/material";
 import { SincoTheme } from "../../../Theme";
 
 export type EventoProps = {
@@ -41,16 +41,18 @@ export const Evento: React.FC<EventoProps> = ({ hora, descripcion }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <Stack flexDirection={"row"} sx={{ maxWidth: '100%' }} gap={.5}>
-                <Typography variant='caption' color={SincoTheme.palette.text.secondary}>{hora}</Typography>
-                <Typography variant='body2' color={SincoTheme.palette.text.primary}
-                    sx={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                >
-                    {descripcion}
-                </Typography>
-            </Stack>
-            <Popper id={id} open={open} anchorEl={anchorEl}>
-                <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
+
+            <Tooltip title={descripcion} >
+                <Stack flexDirection={"row"} sx={{ maxWidth: '100%' }} gap={.5}>
+                    <Typography variant='caption' color={SincoTheme.palette.text.secondary}>{hora}</Typography>
+                    <Typography variant='body2' color={SincoTheme.palette.text.primary}
+                        sx={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                        {descripcion}  Desde, {hora} - hasta  2:00 pm {descripcion}
+
+                    </Typography>
+                </Stack>
+                {/* <Box >
                     <Stack>
                         <Typography variant="body2" color={SincoTheme.palette.text.secondary}>
                             {descripcion}
@@ -59,8 +61,8 @@ export const Evento: React.FC<EventoProps> = ({ hora, descripcion }) => {
                             Desde, {hora} - hasta  2:00 pm
                         </Typography>
                     </Stack>
-                </Box>
-            </Popper>
+                </Box> */}
+            </Tooltip>
         </Card>
     );
 }
