@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.20",
     "@mui/x-date-pickers": "^7.9.0",
     "@sinco/react": "1.2.0",
+    "dayjs": "^1.11.11",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

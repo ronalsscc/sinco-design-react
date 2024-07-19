@@ -10,6 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={SincoTheme}>
     <React.StrictMode>
       <Scheduler />
-    </React.StrictMode>,
+    </React.StrictMode>
   </ThemeProvider>
 )
