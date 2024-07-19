@@ -1,13 +1,13 @@
+import 'moment/min/moment-with-locales';
 import React, { useCallback, useState } from 'react';
 import moment, { Moment } from 'moment/';
-import { CambioFechaProps, Evento } from '..';
 import { SincoTheme } from '../../Theme';
 import { Formulario } from './eventos/Formulario';
+import { CambioFechaProps, Evento } from '..';
 import { Box, Button, Chip, Stack, Typography, Menu, MenuItem } from "@mui/material";
 import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
-
-import 'moment/min/moment-with-locales';
 moment.locale('es');
+
 
 const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
     const mesAnterior = useCallback(() => {
@@ -35,8 +35,6 @@ const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAct
 };
 
 const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
-
-
 
     const obtenerDiasAMostrar = useCallback(() => {
         let diasIteracion = [];
@@ -85,7 +83,6 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                     <Box key={index} sx={{
                         backgroundColor: SincoTheme.palette.grey[50],
                     }}
-                        // maxWidth="7.5rem"
                         height="7rem"
                         boxSizing='border-box'
                         display='flex'
@@ -94,14 +91,14 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         alignItems='center'
                         flexDirection='column'
                         borderRadius={1}
-                        p={1}
+                        p={.5}
                     >
-                        <Stack px={1} justifyContent='center' alignItems={"flex-start"}>
-                            <Typography variant="body2" color='textSecondary' p={1}>{dia.date()}</Typography>
+                        <Stack width="100%" justifyContent='center' alignItems={"flex-start"}>
+                            <Typography variant="body2" color='textSecondary'>{dia.date()}</Typography>
                         </Stack>
-                        <Stack height="100%" width={"100%"} gap={1} sx={{ overflowY: 'auto' }}  >
-                            <Evento hora='9:00 am' descripcion='Capacitacion Obligatoria' />
-                            <Evento hora='9:00 am' descripcion='Capacitacion Obligatoria' />
+                        <Stack height="100%" width="100%" gap={1}   >
+                            <Evento tipoEvento="secondary" horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento tipoEvento="secondary" horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
                         </Stack>
 
                     </Box>

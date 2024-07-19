@@ -1,14 +1,15 @@
 import * as React from 'react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { SincoTheme } from "../../../Theme";
 import { Box, Button, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Autocomplete, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton } from "@mui/material";
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
-import { DateRangePicker } from '@mui/x-date-pickers-pro';
+import { DateRange, DateRangePicker, SingleInputTimeRangeField } from '@mui/x-date-pickers-pro';
 import { Drawer, FormularioProps, UsuarioProps } from '../..';
 import { HighlightOff } from '@mui/icons-material';
+
 
 
 
@@ -31,6 +32,11 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
         cambiarEvento(evento.target.value as string);
     };
 
+    const [value, setValue] = React.useState<DateRange<Moment>>([
+        moment('2022-04-17T15:30'),
+        moment('2022-04-17T18:30'),
+    ]);
+
     return (
         <Drawer
             open={open}
@@ -42,97 +48,96 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
             backgroundColor={SincoTheme.palette.background.paper}
             title='Nuevo evento'
             actions={
-                <Box display="flex" gap={1}>
+                <Box display="flex" gap={1} >
                     <Button variant='text' size='small' onClick={toggleDialog}>Cancelar</Button>
                     <Button variant='contained' size='small' onClick={toggleDialog} >Guardar</Button>
                 </Box>
             }
-            children={
-                <Stack
-                    gap={2}
-                    p={1}
-                    textAlign="center"
-                >
+        >
+            <Stack
+                gap={2}
+                p={1}
+                textAlign="center"
+            >
+                <Typography variant='body1' textAlign="left" color={SincoTheme.palette.text.secondary}>
+                    Ingresa datos del evento
+                </Typography>
+
+                <Stack gap={2} justifyContent={"center"} >
+                    <TextField
+                        label="Nombre del evento"
+                        size="small"
+                        variant="outlined"
+                    />
+                    <Stack gap={1} flexDirection={"row"} alignItems={"center"} >
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <DatePicker label="Fecha evento"
+                                defaultValue={moment('2024-04-17T15:00')} />
+                        </LocalizationProvider>
+
+                        <FormControl sx={{ width: "50%" }}>
+                            <InputLabel >Tipo evento</InputLabel>
+                            <Select
+                                value={evento}
+                                label="Fecha evento"
+                                onChange={obtenerSeleccionEvento}
+                            >
+                                <MenuItem value={10}>Tipo evento 1</MenuItem>
+                                <MenuItem value={20}>Tipo evento 2</MenuItem>
+                                <MenuItem value={30}>Tipo evento 3</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DateRangePicker localeText={{ start: 'Hora inicio', end: 'Hora fin' }} />
+
+                    </LocalizationProvider>
+                </Stack>
+
+
+                <Stack gap={1} justifyContent={"center"}>
                     <Typography variant='body1' textAlign={"left"} color={SincoTheme.palette.text.secondary}>
-                        Ingresa datos del evento
+                        Ingresa asistentes
                     </Typography>
 
-                    <Stack gap={2} justifyContent={"center"} >
-                        <TextField
-                            label="Nombre del evento"
-                            size="small"
-                            variant="outlined"
-                        />
-                        <Stack gap={1} flexDirection={"row"} alignItems={"center"} >
-                            <LocalizationProvider dateAdapter={AdapterMoment}>
-                                <DatePicker label="Fecha evento"
-                                    defaultValue={moment('2024-04-17T15:00')} />
-                            </LocalizationProvider>
-
-                            <FormControl sx={{ width: "50%" }}>
-                                <InputLabel >Tipo evento</InputLabel>
-                                <Select
-                                    value={evento}
-                                    label="Fecha evento"
-                                    onChange={obtenerSeleccionEvento}
-                                >
-                                    <MenuItem value={10}>Tipo evento 1</MenuItem>
-                                    <MenuItem value={20}>Tipo evento 2</MenuItem>
-                                    <MenuItem value={30}>Tipo evento 3</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Stack>
-                        <LocalizationProvider dateAdapter={AdapterMoment}>
-                            <DateRangePicker localeText={{ start: 'Hora inicio', end: 'Hora fin' }} />
-                        </LocalizationProvider>
-                    </Stack>
-
-
-                    <Stack gap={1} justifyContent={"center"}>
-                        <Typography variant='body1' textAlign={"left"} color={SincoTheme.palette.text.secondary}>
-                            Ingresa asistentes
-                        </Typography>
-
-                        <Autocomplete
-                            options={Usuarios}
-                            getOptionLabel={(option) => option.name}
-                            value={usuario}
-                            renderInput={(params) => <TextField {...params} placeholder='Buscar por nombre' variant="outlined" />}
-                            renderOption={(props, option) => (
-                                <ListItem {...props} key={option.id}
-                                    secondaryAction={
-                                        <IconButton edge="end" aria-label="delete">
-                                            <HighlightOff fontSize="small" />
-                                        </IconButton>
-                                    }
-                                >
-                                    <ListItemAvatar >
-                                        <Avatar sx={{ backgroundColor: SincoTheme.palette.warning.main, width: "2rem", height: "2rem" }} >
-                                            <Typography variant="overline">CT</Typography>
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary={option.name} secondary={option.name} />
-                                </ListItem>
-                            )}
-                            isOptionEqualToValue={(option, value) => option.id === value.id}
-                        />
-                    </Stack>
-
-                    <Stack gap={2}>
-                        <Typography variant='body1' textAlign={"left"} color={SincoTheme.palette.text.secondary}>
-                            Agrega alguna descripción
-                        </Typography>
-
-                        <TextField
-                            id="outlined-textarea"
-                            placeholder="Descripcion del evento"
-                            multiline
-                        />
-                    </Stack>
-
+                    <Autocomplete
+                        options={Usuarios}
+                        getOptionLabel={(option) => option.name}
+                        value={usuario}
+                        renderInput={(params) => <TextField {...params} placeholder='Buscar por nombre' variant="outlined" />}
+                        renderOption={(props, option) => (
+                            <ListItem {...props} key={option.id}
+                                secondaryAction={
+                                    <IconButton edge="end" aria-label="delete">
+                                        <HighlightOff fontSize="small" />
+                                    </IconButton>
+                                }
+                            >
+                                <ListItemAvatar >
+                                    <Avatar sx={{ backgroundColor: SincoTheme.palette.warning.main, width: "2rem", height: "2rem" }} >
+                                        <Typography variant="overline">CT</Typography>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={option.name} secondary={option.name} />
+                            </ListItem>
+                        )}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                    />
                 </Stack>
-            }
-        >
+
+                <Stack gap={2}>
+                    <Typography variant='body1' textAlign={"left"} color={SincoTheme.palette.text.secondary}>
+                        Agrega alguna descripción
+                    </Typography>
+
+                    <TextField
+                        id="outlined-textarea"
+                        placeholder="Descripcion del evento"
+                        multiline
+                    />
+                </Stack>
+
+            </Stack>
         </Drawer>
     )
 }

@@ -1,54 +1,68 @@
-import React, { useState } from "react";
-import { Card, Stack, Typography, Popper, Box, Divider, Tooltip } from "@mui/material";
+import React from "react";
+import { Card, Stack, Typography, Tooltip, CardContent, Box } from "@mui/material";
 import { SincoTheme } from "../../../Theme";
 
-export type EventoProps = {
-    hora: string;
+export interface EventoProps {
+    horaInicio: string;
+    horaFin: string;
     descripcion: string;
+    tipoEvento?: string;
 }
 
-export const Evento: React.FC<EventoProps> = ({ hora, descripcion }) => {
-
+export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion, tipoEvento }) => {
     return (
         <Card sx={{
             backgroundColor: SincoTheme.palette.background.paper,
-            borderLeft: "0.313rem solid #058C97",
             display: "flex",
             justifyContent: 'flex-start',
             alignItems: 'center',
             textAlign: 'left',
             height: "1.2rem",
             minHeight: '1.2rem',
-            overflowY: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+            overflow: 'hidden',
             width: '100%',
             gap: 1,
-            p: 0.5,
         }} elevation={1}
         >
+            <Tooltip arrow title={`${descripcion} Desde, ${horaInicio} - hasta ${horaFin}`}
+                slotProps={{
+                    popper: {
+                        modifiers: [
+                            {
+                                name: 'offset',
+                                options: {
+                                    offset: [0, -20],
+                                },
+                            },
+                        ],
+                    },
+                }}
+            >
+                <Stack direction="row" gap={.5} p={.5} sx={{ width: '100%' }}>
+                    <Card sx={{ backgroundColor: tipoEvento || SincoTheme.palette.primary.main, width: 4 }}>
+                        <CardContent sx={{ p: 0 }}></CardContent>
+                    </Card>
 
-            <Tooltip title={descripcion} >
-                <Stack flexDirection={"row"} sx={{ width: '10rem' }} gap={.5}>
-                    <Typography variant='caption' color={SincoTheme.palette.text.secondary}>{hora}</Typography>
-                    <Typography variant='body2' color={SincoTheme.palette.text.primary}
-                        sx={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                    >
-                        {descripcion}  Desde, {hora} - hasta  2:00 pm {descripcion}
-
-                    </Typography>
-                </Stack>
-                {/* <Box >
-                    <Stack>
-                        <Typography variant="body2" color={SincoTheme.palette.text.secondary}>
-                            {descripcion}
+                    <Stack direction="row" gap={.5} sx={{ width: '100%' }}>
+                        <Typography variant='caption' color={SincoTheme.palette.text.secondary}>
+                            {horaInicio}
                         </Typography>
-                        <Typography variant="body2" color={SincoTheme.palette.text.secondary}>
-                            Desde, {hora} - hasta  2:00 pm
-                        </Typography>
+                        <Stack alignItems={"center"} maxWidth={"7.5rem"} justifyContent={"center"} >
+                            <Typography variant='body2' color={SincoTheme.palette.text.primary}
+                                sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    flex: 1,
+                                    width: '100%',
+                                }}
+                            >
+                                {descripcion}
+                            </Typography>
+                        </Stack>
                     </Stack>
-                </Box> */}
+                </Stack>
             </Tooltip>
         </Card>
     );
-}
+};
