@@ -1,18 +1,17 @@
 import React from "react";
-import { Card, Stack, Typography, Tooltip, CardContent, Box } from "@mui/material";
-import { SincoTheme } from "../../../Theme";
+import { Card, Stack, Typography, Tooltip, PaletteColor } from "@mui/material";
 
-export interface EventoProps {
+export type EventoProps = {
     horaInicio: string;
     horaFin: string;
     descripcion: string;
-    tipoEvento?: string;
+    tipoEvento?: PaletteColor;
 }
 
 export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion, tipoEvento }) => {
     return (
         <Card sx={{
-            backgroundColor: SincoTheme.palette.background.paper,
+            backgroundColor: "background.paper",
             display: "flex",
             justifyContent: 'flex-start',
             alignItems: 'center',
@@ -25,30 +24,17 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
         }} elevation={1}
         >
             <Tooltip arrow title={`${descripcion} Desde, ${horaInicio} - hasta ${horaFin}`}
-                slotProps={{
-                    popper: {
-                        modifiers: [
-                            {
-                                name: 'offset',
-                                options: {
-                                    offset: [0, -20],
-                                },
-                            },
-                        ],
-                    },
-                }}
             >
                 <Stack direction="row" gap={.5} p={.5} sx={{ width: '100%' }}>
-                    <Card sx={{ backgroundColor: tipoEvento || SincoTheme.palette.primary.main, width: 4 }}>
-                        <CardContent sx={{ p: 0 }}></CardContent>
-                    </Card>
+
+                    <Card sx={{ backgroundColor: tipoEvento ? tipoEvento[300] : (theme) => theme.palette.primary[300], width: 4 }} />
 
                     <Stack direction="row" gap={.5} sx={{ width: '100%' }}>
-                        <Typography variant='caption' color={SincoTheme.palette.text.secondary}>
+                        <Typography variant='caption' color={"text.secondary"}>
                             {horaInicio}
                         </Typography>
                         <Stack alignItems={"center"} maxWidth={"7.5rem"} justifyContent={"center"} >
-                            <Typography variant='body2' color={SincoTheme.palette.text.primary}
+                            <Typography variant='body2' color="text.primary"
                                 sx={{
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',

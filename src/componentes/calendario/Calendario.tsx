@@ -3,11 +3,11 @@ import React, { useCallback, useState } from 'react';
 import moment, { Moment } from 'moment/';
 import { SincoTheme } from '../../Theme';
 import { Formulario } from './eventos/Formulario';
-import { CambioFechaProps, Evento } from '..';
-import { Box, Button, Chip, Stack, Typography, Menu, MenuItem } from "@mui/material";
-import { LightModeOutlined, ChevronRightOutlined, ChevronLeftOutlined, KeyboardArrowDownOutlined, FilterList } from '@mui/icons-material';
+import { CambioFechaProps, Evento, EventoActivoProps, EventosActivos } from '..';
+import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from "@mui/material";
+import { LightModeOutlined, NavigateNext, KeyboardArrowDownOutlined, FilterList, NavigateBefore } from '@mui/icons-material';
 moment.locale('es');
-
+import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
 
 const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
     const mesAnterior = useCallback(() => {
@@ -19,22 +19,33 @@ const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAct
     }, [fechaActual, cambiarFechaActual]);
 
     return (
-        <Box display='flex' flex={1} flexDirection='row' alignItems='center' justifyContent='space-between' sx={{
+        <Stack flex={1} flexDirection='row' alignItems='center' justifyContent='space-between' sx={{
             backgroundColor: SincoTheme.palette.background.paper
         }}>
             <Chip sx={{
                 backgroundColor: SincoTheme.palette.primary[50]
             }} icon={<LightModeOutlined color='primary' fontSize='small' />} label="Hoy" />
-            <Box display='flex' flexDirection='row' flex={1} justifyContent='center' alignItems='center'>
-                <Button variant="text" startIcon={<ChevronLeftOutlined />} onClick={mesAnterior} />
+
+            <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
+                <IconButton aria-label="anterior" onClick={mesAnterior} >
+                    <NavigateBefore fontSize='small' color='primary' />
+                </IconButton>
                 <Typography color="primary" variant="h6"> {fechaActual.format('MMMM, YYYY')} </Typography>
-                <Button variant="text" startIcon={<ChevronRightOutlined />} onClick={mesSiguiente} />
-            </Box>
-        </Box>
+                <IconButton aria-label="anterior" onClick={mesSiguiente} >
+                    <NavigateNext fontSize='small' color="primary" />
+                </IconButton>
+            </Stack>
+        </Stack>
     );
 };
 
 const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
+
+    const [abrirDrawer, cerrarDrawer] = useState(false);
+
+    const controlDiaEvento = useCallback(() => {
+        cerrarDrawer(prevOpen => !prevOpen);
+    }, []);
 
     const obtenerDiasAMostrar = useCallback(() => {
         let diasIteracion = [];
@@ -71,18 +82,22 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         boxSizing='border-box'
                         borderRadius={1}
                     >
-                        <Typography variant='caption' color={SincoTheme.palette.text.secondary}>
+                        <Typography variant='caption' color="text.secondary">
                             {dia}
                         </Typography>
                     </Stack>
                 ))}
             </Stack>
 
-            <Stack display='grid' height={"95%"} width={"100%"} overflow={"auto"} gridTemplateColumns="repeat(7, 1fr)" gap={.5} >
+            <Stack display='grid' height="95%" width="100%" overflow="auto" gridTemplateColumns="repeat(7, 1fr)" gap={.5} >
                 {obtenerDiasAMostrar().map((dia, index) => (
                     <Box key={index} sx={{
-                        backgroundColor: SincoTheme.palette.grey[50],
+                        backgroundColor: "background.paper",
+                        ":hover, :focus, :active": {
+                            backgroundColor: "primary.50",
+                        }
                     }}
+
                         height="7rem"
                         boxSizing='border-box'
                         display='flex'
@@ -92,23 +107,26 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         flexDirection='column'
                         borderRadius={1}
                         p={.5}
+                        gap={.5}
+                        onClick={controlDiaEvento}
                     >
                         <Stack width="100%" justifyContent='center' alignItems={"flex-start"}>
                             <Typography variant="body2" color='textSecondary'>{dia.date()}</Typography>
                         </Stack>
                         <Stack height="100%" width="100%" gap={1}   >
-                            <Evento tipoEvento="secondary" horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
-                            <Evento tipoEvento="secondary" horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
                         </Stack>
 
                     </Box>
                 ))}
+                <EventosActivos abrir={abrirDrawer} controlDialogo={controlDiaEvento} />
             </Stack>
         </Box>
     );
 };
 
-export const Calendario: React.FC = () => {
+export const Calendario = () => {
 
     const [open, setOpen] = useState(false);
     const [anchorEl, cambiarAnchor] = useState<null | HTMLElement>(null);
@@ -159,7 +177,8 @@ export const Calendario: React.FC = () => {
         >
             <Box display='flex' alignItems='center' justifyContent='space-between' p={1} gap={1}>
                 <Box display='flex' alignItems='center' justifyContent='center' gap={1}>
-                    <img src='/Icono encabezado.svg' alt='icono_calendario.svg' />
+                    <img src={CalendarICon} alt='icono_calendario.svg' style={{ width: '44px', height: '44px', objectFit: 'contain' }} />
+                    {/* <CalendarICon />  */}
                     <Typography variant='h6'>
                         Calendario de eventos
                     </Typography>

@@ -10,6 +10,11 @@ export interface FormularioProps {
     toggleDialog: () => void;
 }
 
+export interface EventoActivoProps {
+    abrir: boolean;
+    controlDialogo: () => void;
+}
+
 export interface UsuarioProps {
     id: number;
     name: string;

@@ -1,18 +1,17 @@
 import React, { useCallback, useState } from "react";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { SincoTheme } from "../../Theme";
 import { ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
-import { NuevoEvento } from "./NuevoEvento";
-import dayjs from "dayjs";
+// import { NuevoEvento } from "./NuevoEvento";
 
 interface Evento {
   nombreEvento: string;
-  fechaInicio: dayjs.Dayjs | null;
-  fechaFinal: dayjs.Dayjs | null;
+  fechaInicio: Moment | null;
+  fechaFinal: Moment | null;
 }
 
-export const DiaScheduler: React.FC = () => {
+export const VistaDia: React.FC = () => {
   const [fechaActual, setFechaActual] = useState(moment());
   const [eventos, setEventos] = useState<{ [key: string]: Evento }>({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -78,7 +77,7 @@ export const DiaScheduler: React.FC = () => {
         <span
           style={{
             borderStyle: "solid",
-            borderColor: SincoTheme.palette.grey[400],
+            borderColor: "grey.300",
             borderWidth: "0 1px 1px 0",
           }}
         ></span>
@@ -140,11 +139,6 @@ export const DiaScheduler: React.FC = () => {
           </Stack>
         ))}
       </Stack>
-      <NuevoEvento
-        open={isDialogOpen}
-        toggleDialog={toggleDialog}
-        onSave={handleSaveEvento}
-      />
     </Stack>
   );
 };

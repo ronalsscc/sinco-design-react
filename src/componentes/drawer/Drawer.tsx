@@ -15,7 +15,7 @@ const borderStyles: Record<
 export interface DrawerComponentProperties {
   title: string;
   children: ReactNode;
-  actions: ReactNode;
+  actions?: ReactNode;
   showActions?: boolean;
   anchor?: DrawerPosition;
   anchorActions: "flex-end" | "flex-start";
@@ -23,6 +23,7 @@ export interface DrawerComponentProperties {
   open: boolean;
   onClose: () => void;
   sx?: SxProps;
+  sxActions?: SxProps;
   backgroundColor?: string;
   color?: string;
   headerColor?: string;
@@ -36,6 +37,7 @@ export const DrawerComponent = ({
   children,
   actions,
   showActions,
+  sxActions,
   anchor = "left",
   anchorActions = "flex-end",
   width,
@@ -107,6 +109,7 @@ export const DrawerComponent = ({
             py={1.5}
             px={1}
             bgcolor="background.default"
+            sx={sxActions}
           >
             {actions}
           </Stack>
