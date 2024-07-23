@@ -8,8 +8,8 @@ const borderStyles: Record<
   DrawerPosition,
   { borderTopRightRadius?: string; borderTopLeftRadius?: string }
 > = {
-  left: { borderTopRightRadius: "4px" },
-  right: { borderTopLeftRadius: "4px" },
+  left: { borderTopRightRadius: "0.25rem" },
+  right: { borderTopLeftRadius: "0.25rem" },
 };
 
 export interface DrawerComponentProperties {

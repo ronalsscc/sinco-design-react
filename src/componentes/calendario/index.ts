@@ -1,3 +1,4 @@
 export * from './Calendario';
-export * from './VistaDia';
+export * from './vistas';
 export * from './eventos';
+

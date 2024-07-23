@@ -30,10 +30,10 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
                     <Card sx={{ backgroundColor: tipoEvento ? tipoEvento[300] : (theme) => theme.palette.primary[300], width: 4 }} />
 
                     <Stack direction="row" gap={.5} sx={{ width: '100%' }}>
-                        <Typography variant='caption' color={"text.secondary"}>
+                        <Typography variant='caption' color="text.secondary">
                             {horaInicio}
                         </Typography>
-                        <Stack alignItems={"center"} maxWidth={"7.5rem"} justifyContent={"center"} >
+                        <Stack alignItems="center" maxWidth="6.5rem" justifyContent="center" >
                             <Typography variant='body2' color="text.primary"
                                 sx={{
                                     overflow: 'hidden',

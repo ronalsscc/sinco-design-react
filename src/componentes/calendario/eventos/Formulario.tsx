@@ -19,16 +19,11 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
 
     const [evento, cambiarEvento] = React.useState('');
     const [usuario, cambiarUuario] = React.useState<UsuarioProps | null>(null);
-    const [fecha, cambiarFecha] = React.useState<moment.Moment | null>(moment('2022-04-17T15:30'));
 
     const obtenerSeleccionEvento = (evento: SelectChangeEvent) => {
         cambiarEvento(evento.target.value as string);
     };
 
-    // const [value, setValue] = React.useState<DateRange<Moment>>([
-    //     moment('2022-04-17T15:30'),
-    //     moment('2022-04-17T18:30'),
-    // ]);
 
     return (
         <Drawer
@@ -36,7 +31,7 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
             anchorActions='flex-end'
             anchor='right'
             showActions={true}
-            width='420px'
+            width='26.25rem'
             onClose={toggleDialog}
             backgroundColor="background.paper"
             title='Nuevo evento'
@@ -57,13 +52,13 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
                     Ingresa datos del evento
                 </Typography>
 
-                <Stack gap={2} justifyContent={"center"} >
+                <Stack gap={2} justifyContent="center" >
                     <TextField
                         label="Nombre del evento"
                         size="small"
                         variant="outlined"
                     />
-                    <Stack gap={1} flexDirection={"row"} alignItems={"center"} >
+                    <Stack gap={1} flexDirection="row" alignItems="center" >
                         <LocalizationProvider dateAdapter={AdapterMoment}>
                             <DatePicker label="Fecha evento"
                                 defaultValue={moment('2024-04-17T15:00')} />
@@ -82,10 +77,11 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
                             </Select>
                         </FormControl>
                     </Stack>
-                    
+
                     <LocalizationProvider dateAdapter={AdapterMoment}>
-                        <Stack flexDirection="row" width="100%" gap={1}>
+                        <Stack flexDirection="row" width="100%" alignItems="center" gap={1}>
                             <TimePicker label="Hora inicio" />
+                            -
                             <TimePicker label="Hora fin" />
                         </Stack>
                     </LocalizationProvider>
@@ -111,7 +107,7 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
                                 }
                             >
                                 <ListItemAvatar >
-                                    <Avatar sx={{ backgroundColor: "warning", width: "2rem", height: "2rem" }} >
+                                    <Avatar sx={{ backgroundColor: "warning.main", width: "2rem", height: "2rem" }} >
                                         <Typography variant="overline">CT</Typography>
                                     </Avatar>
                                 </ListItemAvatar>

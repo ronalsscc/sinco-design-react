@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import moment, { Moment } from "moment";
-import { Button, IconButton, Stack, Typography } from "@mui/material";
-import { SincoTheme } from "../../Theme";
+import { Button, Card, CardContent, IconButton, Stack, Typography } from "@mui/material";
+import { SincoTheme } from "../../../Theme";
 import { ChevronLeftOutlined, ChevronRightOutlined } from "@mui/icons-material";
-// import { NuevoEvento } from "./NuevoEvento";
+import { Formulario } from "..";
 
 interface Evento {
   nombreEvento: string;
@@ -11,14 +11,14 @@ interface Evento {
   fechaFinal: Moment | null;
 }
 
-export const VistaDia: React.FC = () => {
+export const VistaDias: React.FC = () => {
   const [fechaActual, setFechaActual] = useState(moment());
   const [eventos, setEventos] = useState<{ [key: string]: Evento }>({});
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isFormularioOpen, setIsFormularioOpen] = useState(false);
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
 
-  const toggleDialog = () => {
-    setIsDialogOpen(!isDialogOpen);
+  const toggleFormulario = () => {
+    setIsFormularioOpen(!isFormularioOpen);
   };
 
   const handleSaveEvento = (nuevoEvento: Evento) => {
@@ -28,7 +28,7 @@ export const VistaDia: React.FC = () => {
         [selectedHour]: nuevoEvento,
       }));
     }
-    toggleDialog();
+    toggleFormulario();
   };
 
   const obtenerHoraFormato = useCallback((hora: string): string => {
@@ -58,7 +58,7 @@ export const VistaDia: React.FC = () => {
 
   const handleButtonClick = (hora: string) => {
     setSelectedHour(hora);
-    toggleDialog();
+    toggleFormulario();
   };
 
   return (
@@ -77,13 +77,13 @@ export const VistaDia: React.FC = () => {
         <span
           style={{
             borderStyle: "solid",
-            borderColor: "grey.300",
+            borderColor: SincoTheme.palette.grey[400],
             borderWidth: "0 1px 1px 0",
           }}
         ></span>
         <Stack
           flexDirection={"row"}
-          alignItems={"center"}
+          alignItems="center"
           sx={{
             border: `solid 1px ${SincoTheme.palette.grey[400]}`,
             borderWidth: "0 1px 1px 0",
@@ -105,40 +105,48 @@ export const VistaDia: React.FC = () => {
           <Stack
             flexDirection="row"
             key={index}
-            height={"3rem"}
+            height="3rem"
             display="grid"
-            alignItems={"center"}
-            gridTemplateColumns={"10% repeat(1, 1fr)"}
+            alignItems="center"
+            gridTemplateColumns="10% repeat(1, 1fr)"
             sx={{
               "&:last-of-type": {
                 borderWidth: "0 0 1px 1px",
               },
               borderStyle: "solid",
-              borderColor: SincoTheme.palette.grey[400],
+              borderColor: "grey.400",
               borderWidth: "0 1px 1px 1px",
             }}
           >
             <Stack
               height={"3rem"}
-              justifyContent={"center"}
-              borderRight={"solid 1px #DCDEE0"}
+              justifyContent="center"
+              borderRight="solid 1px #DCDEE0"
             >
               <Typography variant="body2" align="center" color={"text.primary"}>
                 {obtenerHoraFormato(hora)}
               </Typography>
             </Stack>
             <Stack>
-              <Button
-                variant="text"
+              <Card
+                // variant="text"
                 sx={{ height: 48 }}
                 onClick={() => handleButtonClick(hora)}
               >
-                {eventos[hora] && eventos[hora].nombreEvento}
-              </Button>
+                <CardContent>
+                  {eventos[hora] && eventos[hora].nombreEvento}
+                </CardContent>
+              </Card>
             </Stack>
           </Stack>
         ))}
       </Stack>
+
+      <Formulario
+        open={isFormularioOpen}
+        toggleDialog={toggleFormulario}
+      // onSave={handleSaveEvento}
+      />
     </Stack>
   );
 };

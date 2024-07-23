@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom/client'
 
 import { ThemeProvider } from '@mui/material'
 import { SincoTheme } from './Theme'
-import { Calendario } from '.'
+import { Calendario, VistaDia } from '.'
 import "./main.css";
-import { VistaDia } from './componentes/calendario/VistaDia'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={SincoTheme}>
     <React.StrictMode>
-      {/* <Calendario /> */}
-      <VistaDia />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Calendario />} />
+          <Route path="/vistaDia" element={<VistaDia />} />
+        </Routes>
+      </Router>
     </React.StrictMode>
   </ThemeProvider>
 )
+

@@ -1,15 +1,16 @@
 import 'moment/min/moment-with-locales';
 import React, { useCallback, useState } from 'react';
-import moment, { Moment } from 'moment/';
-import { SincoTheme } from '../../Theme';
 import { Formulario } from './eventos/Formulario';
-import { CambioFechaProps, Evento, EventoActivoProps, EventosActivos } from '..';
+import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
+import { CambioFechaProps, Evento, EventosActivos } from '..';
 import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from "@mui/material";
 import { LightModeOutlined, NavigateNext, KeyboardArrowDownOutlined, FilterList, NavigateBefore } from '@mui/icons-material';
+import moment, { Moment } from 'moment/';
+import { Link } from 'react-router-dom';
 moment.locale('es');
-import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
 
 const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+
     const mesAnterior = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
     }, [fechaActual, cambiarFechaActual]);
@@ -20,10 +21,10 @@ const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAct
 
     return (
         <Stack flex={1} flexDirection='row' alignItems='center' justifyContent='space-between' sx={{
-            backgroundColor: SincoTheme.palette.background.paper
+            backgroundColor: "background.paper"
         }}>
             <Chip sx={{
-                backgroundColor: SincoTheme.palette.primary[50]
+                backgroundColor: "primary.50"
             }} icon={<LightModeOutlined color='primary' fontSize='small' />} label="Hoy" />
 
             <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
@@ -70,7 +71,7 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
     const diasDeLaSemana = moment.weekdays();
 
     return (
-        <Box width='100%' height={"100%"} maxHeight={"512px"}
+        <Box width='100%' height={"100%"} maxHeight={"32rem"}
             boxSizing='border-box' justifyContent="center" gap={0.5} flexWrap='wrap' sx={{ backgroundColor: 'transparent' }}>
             <Stack display='grid' height={"5%"} gridTemplateColumns="repeat(7, 1fr)" py={1}>
                 {diasDeLaSemana.map((dia, index) => (
@@ -95,7 +96,8 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         backgroundColor: "background.paper",
                         ":hover, :focus, :active": {
                             backgroundColor: "primary.50",
-                        }
+                        },
+                        // overflow: "hidden"
                     }}
 
                         height="7rem"
@@ -110,12 +112,17 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         gap={.5}
                         onClick={controlDiaEvento}
                     >
-                        <Stack width="100%" justifyContent='center' alignItems={"flex-start"}>
+                        <Stack width="100%" justifyContent='center' alignItems="flex-start">
                             <Typography variant="body2" color='textSecondary'>{dia.date()}</Typography>
                         </Stack>
-                        <Stack height="100%" width="100%" gap={1}   >
+                        <Stack height="100%" width="100%" gap={1} sx={{overflowY: "auto"}}>
                             <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
                             <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            {/* <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                            <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' /> */}
+
                         </Stack>
 
                     </Box>
@@ -172,23 +179,22 @@ export const Calendario = () => {
             height={'100vh'}
             width='100%'
             sx={{
-                backgroundColor: SincoTheme.palette.background.default
+                backgroundColor: "background.default"
             }}
         >
             <Box display='flex' alignItems='center' justifyContent='space-between' p={1} gap={1}>
                 <Box display='flex' alignItems='center' justifyContent='center' gap={1}>
-                    <img src={CalendarICon} alt='icono_calendario.svg' style={{ width: '44px', height: '44px', objectFit: 'contain' }} />
-                    {/* <CalendarICon />  */}
+                    <img src={CalendarICon} alt='icono_calendario.svg' style={{ width: '2.75rem', height: '2.75rem', objectFit: 'contain' }} />
                     <Typography variant='h6'>
                         Calendario de eventos
                     </Typography>
                 </Box>
                 <Box display='flex' flexDirection='row' justifyContent="center" gap={1}>
-                    <Button startIcon={<FilterList />} size="small" color="primary" variant='text'> Filtrar </Button>
+                    <Button startIcon={<FilterList />} size="small" color="primary" variant='text' component={Link} to="/vistaDia"> Filtrar </Button>
                     <Button onClick={obtenerAñoAMostrar} endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Año</Button>
                     <Menu
                         sx={{
-                            height: "350px",
+                            height: "21.875rem",
                             overflow: "auto",
 
                         }}
