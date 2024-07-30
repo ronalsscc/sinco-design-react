@@ -1,21 +1,13 @@
 import * as React from 'react';
 import moment, { Moment } from 'moment';
-import { Drawer, FormularioProps, UsuarioProps } from '../..';
+import { Drawer, controlAbrirCerrar, UsuarioProps, Usuarios } from '../..';
 import { HighlightOff } from '@mui/icons-material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Box, Button, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Autocomplete, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton } from "@mui/material";
 
-
-const Usuarios: UsuarioProps[] = [
-    { id: 1, name: 'María Paula García Romero', cargo: 'Contador publico', avatar: 'https://via.placeholder.com/40' },
-    { id: 2, name: 'Diana Álvarez Cárdenas', cargo: 'Scrum master', avatar: 'https://via.placeholder.com/40' },
-    { id: 3, name: 'Camila María Torres Alvarado', cargo: 'Auxiliar administrativo', avatar: 'https://via.placeholder.com/40' },
-];
-
-
-export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) => {
+export const AgregarEvento: React.FC<controlAbrirCerrar> = ({ open, onClose }) => {
 
     const [evento, cambiarEvento] = React.useState('');
     const [usuario, cambiarUuario] = React.useState<UsuarioProps | null>(null);
@@ -32,13 +24,13 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
             anchor='right'
             showActions={true}
             width='26.25rem'
-            onClose={toggleDialog}
+            onClose={onClose}
             backgroundColor="background.paper"
             title='Nuevo evento'
             actions={
                 <Box display="flex" gap={1} >
-                    <Button variant='text' size='small' onClick={toggleDialog}>Cancelar</Button>
-                    <Button variant='contained' size='small' onClick={toggleDialog} >Guardar</Button>
+                    <Button variant='text' size='small' onClick={onClose}>Cancelar</Button>
+                    <Button variant='contained' size='small' onClick={onClose} >Guardar</Button>
                 </Box>
             }
         >
@@ -107,8 +99,12 @@ export const Formulario: React.FC<FormularioProps> = ({ open, toggleDialog }) =>
                                 }
                             >
                                 <ListItemAvatar >
-                                    <Avatar sx={{ backgroundColor: "warning.main", width: "2rem", height: "2rem" }} >
-                                        <Typography variant="overline">CT</Typography>
+                                    <Avatar sx={{
+                                        backgroundColor: (theme) => theme.palette.warning.main,
+                                        width: "2rem", height: "2rem"
+                                    }}
+                                    >
+                                        <Typography variant="overline"  color="common.white">CT</Typography>
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary={option.name} secondary={option.name} />

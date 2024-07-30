@@ -1,9 +1,51 @@
-import { Stack, Typography, Divider } from "@mui/material";
-import { useMemo } from "react";
-import moment from "moment";
+import moment, { Moment } from 'moment/';
+import { useCallback, useMemo, useState } from "react";
+import { Stack, Typography, Divider, IconButton, Chip } from "@mui/material";
+import { LightModeOutlined, NavigateBefore, NavigateNext, ArrowBackIos } from "@mui/icons-material";
+import { Link } from 'react-router-dom';
+import { CambioFechaProps } from "../..";
+
+import 'moment/min/moment-with-locales.js';
+moment.locale('es');
+
+const ControlFechaPorDia: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+
+    const mesAnterior = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
+    }, [fechaActual, cambiarFechaActual]);
+
+    const mesSiguiente = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
+    }, [fechaActual, cambiarFechaActual]);
+
+    return (
+        <Stack flexDirection='row' alignItems='center' p={1} justifyContent='space-between' gap={1} bgcolor="background.paper" >
+            <IconButton component={Link} to="/" >
+                <ArrowBackIos fontSize='small' color='primary' />
+            </IconButton>
+
+
+            <Stack flexDirection='row' gap={1} justifyContent='center' alignItems='center'>
+                <IconButton onClick={mesAnterior} >
+                    <NavigateBefore fontSize='small' color='primary' />
+                </IconButton>
+                <Typography color="primary" variant="h6"> {fechaActual.format('D MMMM, YYYY')} </Typography>
+                <IconButton onClick={mesSiguiente} >
+                    <NavigateNext fontSize='small' color="primary" />
+                </IconButton>
+            </Stack>
+
+            <Chip sx={{
+                backgroundColor: "primary.50"
+            }} icon={<LightModeOutlined color='primary' fontSize='small' />} label="Hoy" />
+
+        </Stack>
+    );
+};
 
 export const VistaDia = () => {
-    const timeIntervals = useMemo(() => {
+
+    const intervaloTiempo = useMemo(() => {
         const horaInicio = moment().startOf('day').hour(8);
         const horaFin = moment().startOf('day').hour(18);
         const hours = [];
@@ -16,9 +58,12 @@ export const VistaDia = () => {
         return hours;
     }, []);
 
+    const [fechaActual, cambiarFechaActual] = useState<Moment>(moment());
+
     return (
-        <Stack width="100%" height="100%" bgcolor="background.paper" p={1} spacing={1}>
-            {timeIntervals.map((hour) => (
+        <Stack height="100%" bgcolor="background.paper" p={1} spacing={1}>
+            <ControlFechaPorDia fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
+            {intervaloTiempo.map((hour) => (
                 <Stack key={hour} direction="row" spacing={1} alignItems="center">
                     <Typography variant="body2" color="textSecondary" width={60}>
                         {hour}:00

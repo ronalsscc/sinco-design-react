@@ -18,6 +18,7 @@ export const palette: PaletteOptions = {
     A400: "#3F83FF",
     A700: "#2572FF",
     contrastText: "#ffffff",
+    
   },
   secondary: {
     50: "#E0F7FA",

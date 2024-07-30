@@ -1,15 +1,15 @@
 import 'moment/min/moment-with-locales';
 import React, { useCallback, useState } from 'react';
-import { Formulario } from './eventos/Formulario';
+import { AgregarEvento } from './eventos/AgregarEvento';
 import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
-import { CambioFechaProps, Evento, EventosActivos } from '..';
+import { CambioFechaProps, Evento, ListaEventos } from '..';
 import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from "@mui/material";
-import { LightModeOutlined, NavigateNext, KeyboardArrowDownOutlined, FilterList, NavigateBefore } from '@mui/icons-material';
+import { LightModeOutlined, NavigateNext, KeyboardArrowDownOutlined, FilterList, NavigateBefore, CalendarToday } from '@mui/icons-material';
 import moment, { Moment } from 'moment/';
 import { Link } from 'react-router-dom';
 moment.locale('es');
 
-const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
 
     const mesAnterior = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
@@ -19,13 +19,22 @@ const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAct
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
     }, [fechaActual, cambiarFechaActual]);
 
+    const resetToToday = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment());
+    }, [cambiarFechaActual]);
+
+
+
     return (
-        <Stack flex={1} flexDirection='row' alignItems='center' justifyContent='space-between' sx={{
-            backgroundColor: "background.paper"
-        }}>
-            <Chip sx={{
-                backgroundColor: "primary.50"
-            }} icon={<LightModeOutlined color='primary' fontSize='small' />} label="Hoy" />
+        <Stack flexDirection='row' py={.5} px={1} alignItems='center' justifyContent='space-around' bgcolor="background.paper">
+            <Chip
+                sx={{
+                    backgroundColor: "primary.50"
+                }}
+                icon={<LightModeOutlined color='primary' fontSize='small' />}
+                label="Hoy"
+                onClick={resetToToday}
+            />
 
             <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
                 <IconButton aria-label="anterior" onClick={mesAnterior} >
@@ -35,6 +44,10 @@ const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaAct
                 <IconButton aria-label="anterior" onClick={mesSiguiente} >
                     <NavigateNext fontSize='small' color="primary" />
                 </IconButton>
+            </Stack>
+            <Stack flexDirection="row" gap={1}>
+
+                <Button startIcon={<CalendarToday fontSize='small' />} size="small" color="primary" variant='outlined' component={Link} to="/vistaDia"> Día </Button>
             </Stack>
         </Stack>
     );
@@ -95,9 +108,8 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                     <Box key={index} sx={{
                         backgroundColor: "background.paper",
                         ":hover, :focus, :active": {
-                            backgroundColor: "primary.50",
+                            backgroundColor: (theme) => theme.palette.primary[50],
                         },
-                        // overflow: "hidden"
                     }}
 
                         height="7rem"
@@ -110,24 +122,24 @@ const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
                         borderRadius={1}
                         p={.5}
                         gap={.5}
-                        onClick={controlDiaEvento}
+                        onDoubleClick={controlDiaEvento}
                     >
-                        <Stack width="100%" justifyContent='center' alignItems="flex-start">
-                            <Typography variant="body2" color='textSecondary'>{dia.date()}</Typography>
+                        <Stack width="100%" justifyContent='center' alignItems="flex-start" alignContent="center" >
+                            <Typography variant="subtitle2" color='textSecondary' alignContent="center" justifyItems="center" borderRadius={100}
+                                sx={{
+                                    backgroundColor: dia.isSame(moment(), 'day') ? 'primary.100' : 'transparent',
+                                    width: "24px",
+                                    height: "24px"
+                                }}
+                            >{dia.date()}</Typography>
                         </Stack>
-                        <Stack height="100%" width="100%" gap={1} sx={{overflowY: "auto"}}>
+                        <Stack height="100%" width="100%" gap={1} sx={{ overflowY: "auto" }}>
                             <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
                             <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
-                            {/* <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
-                            <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
-                            <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
-                            <Evento horaInicio="9:00am" horaFin="2:00pm" descripcion='Capacitacion Obligatoria' /> */}
-
                         </Stack>
-
                     </Box>
                 ))}
-                <EventosActivos abrir={abrirDrawer} controlDialogo={controlDiaEvento} />
+                <ListaEventos open={abrirDrawer} onClose={controlDiaEvento} />
             </Stack>
         </Box>
     );
@@ -184,19 +196,18 @@ export const Calendario = () => {
         >
             <Box display='flex' alignItems='center' justifyContent='space-between' p={1} gap={1}>
                 <Box display='flex' alignItems='center' justifyContent='center' gap={1}>
-                    <img src={CalendarICon} alt='icono_calendario.svg' style={{ width: '2.75rem', height: '2.75rem', objectFit: 'contain' }} />
+                    <img src={CalendarICon} alt='icono_calendario.svg' style={{ width: '2.75rem', height: '2.75rem' }} />
                     <Typography variant='h6'>
                         Calendario de eventos
                     </Typography>
                 </Box>
                 <Box display='flex' flexDirection='row' justifyContent="center" gap={1}>
-                    <Button startIcon={<FilterList />} size="small" color="primary" variant='text' component={Link} to="/vistaDia"> Filtrar </Button>
+                    <Button startIcon={<FilterList fontSize='small' />} size="small" color="primary" variant='text' > Filtrar </Button>
                     <Button onClick={obtenerAñoAMostrar} endIcon={<KeyboardArrowDownOutlined />} size="small" color="primary" variant='outlined'>Año</Button>
                     <Menu
                         sx={{
                             height: "21.875rem",
                             overflow: "auto",
-
                         }}
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
@@ -224,7 +235,7 @@ export const Calendario = () => {
 
             <ControlFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
             <ContenedorDias fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
-            <Formulario open={open} toggleDialog={abrirCerrarDrawer} />
+            <AgregarEvento open={open} onClose={abrirCerrarDrawer} />
         </Box>
     );
 };
