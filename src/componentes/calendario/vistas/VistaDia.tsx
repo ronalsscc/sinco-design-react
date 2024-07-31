@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Stack, Typography, Divider, IconButton, Chip } from "@mui/material";
 import { LightModeOutlined, NavigateBefore, NavigateNext, ArrowBackIos } from "@mui/icons-material";
 import { Link } from 'react-router-dom';
-import { CambioFechaProps } from "../..";
+import { CambioFechaProps, Evento } from "../..";
 
 import 'moment/min/moment-with-locales.js';
 moment.locale('es');
@@ -69,7 +69,11 @@ export const VistaDia = () => {
                         {hour}:00
                     </Typography>
                     <Divider orientation="vertical" flexItem />
-                    <Stack flex={1} bgcolor="background.default" height={60} borderRadius={1} />
+                    <Stack flexDirection={"row"} alignItems="center" justifyContent="flex-start" gap={1} p={1} flex={1} bgcolor="background.default" height={60} borderRadius={1} >
+                        {/* <Stack alignItems="center" maxWidth="7.5rem" gap={1}> */}
+                            <Evento horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                        {/* </Stack> */}
+                    </Stack>
                 </Stack>
             ))}
         </Stack>

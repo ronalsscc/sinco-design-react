@@ -9,7 +9,49 @@ import moment, { Moment } from 'moment/';
 import { Link } from 'react-router-dom';
 moment.locale('es');
 
+// export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+
+//     const mesAnterior = useCallback(() => {
+//         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
+//     }, [fechaActual, cambiarFechaActual]);
+
+//     const mesSiguiente = useCallback(() => {
+//         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
+//     }, [fechaActual, cambiarFechaActual]);
+
+//     const resetToToday = useCallback(() => {
+//         if (cambiarFechaActual) cambiarFechaActual(moment());
+//     }, [cambiarFechaActual]);
+
+//     return (
+//         <Stack flexDirection='row' py={.5} px={1} alignItems='center' justifyContent='space-around' bgcolor="background.paper">
+//             <Chip
+//                 sx={{
+//                     backgroundColor: "primary.50"
+//                 }}
+//                 icon={<LightModeOutlined color='primary' fontSize='small' />}
+//                 label="Hoy"
+//                 onClick={resetToToday}
+//             />
+
+//             <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
+//                 <IconButton aria-label="anterior" onClick={mesAnterior} >
+//                     <NavigateBefore fontSize='small' color='primary' />
+//                 </IconButton>
+//                 <Typography color="primary" variant="h6"> {fechaActual.format('MMMM, YYYY')} </Typography>
+//                 <IconButton aria-label="anterior" onClick={mesSiguiente} >
+//                     <NavigateNext fontSize='small' color="primary" />
+//                 </IconButton>
+//             </Stack>
+//             <Stack flexDirection="row" gap={1}>
+//                 <Button startIcon={<CalendarToday fontSize='small' />} size="small" color="primary" variant='outlined' component={Link} to="/vistaDia"> Día </Button>
+//             </Stack>
+//         </Stack>
+//     );
+// };
 export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+
+    const [open, setOpen] = useState(false);
 
     const mesAnterior = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
@@ -23,7 +65,9 @@ export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarF
         if (cambiarFechaActual) cambiarFechaActual(moment());
     }, [cambiarFechaActual]);
 
-
+    const abrirCerrarDrawer = useCallback(() => {
+        setOpen(prevOpen => !prevOpen);
+    }, []);
 
     return (
         <Stack flexDirection='row' py={.5} px={1} alignItems='center' justifyContent='space-around' bgcolor="background.paper">
@@ -46,13 +90,13 @@ export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarF
                 </IconButton>
             </Stack>
             <Stack flexDirection="row" gap={1}>
-
                 <Button startIcon={<CalendarToday fontSize='small' />} size="small" color="primary" variant='outlined' component={Link} to="/vistaDia"> Día </Button>
+                <Button size="small" color="primary" variant='contained' onClick={abrirCerrarDrawer}>Nuevo evento</Button>
             </Stack>
+            <AgregarEvento open={open} onClose={abrirCerrarDrawer} />
         </Stack>
     );
 };
-
 const ContenedorDias: React.FC<CambioFechaProps> = ({ fechaActual }) => {
 
     const [abrirDrawer, cerrarDrawer] = useState(false);
@@ -229,7 +273,6 @@ export const Calendario = () => {
                             </MenuItem>
                         ))}
                     </Menu>
-                    <Button size="small" color="primary" variant='contained' onClick={abrirCerrarDrawer}>Nuevo evento</Button>
                 </Box>
             </Box>
 

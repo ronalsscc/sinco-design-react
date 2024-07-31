@@ -57,7 +57,7 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
                         <Typography variant='caption' color="text.secondary">
                             {horaInicio}
                         </Typography>
-                        <Stack alignItems="center" maxWidth="6.5rem" justifyContent="center">
+                        <Stack alignItems="center" maxWidth="7rem"  justifyContent="center">
                             <Typography
                                 variant='body2'
                                 color="text.primary"

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { SincoTheme } from './Theme'
-import { Calendario, Editar, VistaDia } from '.'
+import { Calendario, VistaDia } from '.'
 import { ThemeProvider } from '@mui/material'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import "./main.css";
@@ -13,7 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/vistaDia" element={<VistaDia />} />
-          <Route path="/Editar" element={<Editar />}/>
         </Routes>
       </Router>
     </React.StrictMode>
