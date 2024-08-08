@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Button, Card, Popover, Stack, Typography } from "@mui/material";
 import { EditarEvento } from '../..';
 
-export interface EventoProps {
+ interface EventoProps {
     horaInicio: string;
     horaFin: string;
-    descripcion: string;
+    nombreEvento: string;
 }
 
-export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion }) => {
+export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, nombreEvento }) => {
 
     const [editar, controlEditar] = React.useState(false);
 
@@ -36,6 +36,7 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
     return (
         <>
             <Card
+            
                 sx={{
                     backgroundColor: "background.paper",
                     display: "flex",
@@ -46,6 +47,7 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
                     minHeight: '1.2rem',
                     overflow: 'hidden',
                     width: '100%',
+                    maxWidth: "200px",
                     gap: 1,
                 }}
                 elevation={1}
@@ -69,7 +71,7 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
                                     width: '100%',
                                 }}
                             >
-                                {descripcion}
+                                {nombreEvento}
                             </Typography>
                         </Stack>
                     </Stack>
@@ -88,7 +90,7 @@ export const Evento: React.FC<EventoProps> = ({ horaInicio, horaFin, descripcion
             >
                 <Stack width="250px" spacing={1} p={1} > 
                     <Typography variant='h6' color={(theme) => theme.palette.primary.main}>
-                        {descripcion}
+                        {nombreEvento}
                     </Typography>
                     <Typography variant='subtitle2' color="text.secondary">
                         Desde: {horaInicio} - {horaFin}

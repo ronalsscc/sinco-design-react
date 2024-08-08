@@ -1,7 +1,7 @@
 import { Chip, Typography, Stack, Dialog, DialogContent, IconButton } from "@mui/material"
-import { Eventos, controlAbrirCerrar } from "../.."
 import { Close, ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {  controlAbrirCerrar } from "../..";
 
 export const ListaEventos: React.FC<controlAbrirCerrar> = ({ open, onClose }) => {
 
@@ -21,7 +21,7 @@ export const ListaEventos: React.FC<controlAbrirCerrar> = ({ open, onClose }) =>
                         </IconButton>
                     </Stack>
 
-                    {Eventos.map((evento, index) => (
+                    {/* {Eventoss.map((evento, index) => (
                         <Accordion key={index} defaultExpanded elevation={0} sx={{ width: "100%", boxShadow: "none !important" }} >
                             <AccordionSummary
                                 expandIcon={<ExpandMore />}
@@ -75,7 +75,7 @@ export const ListaEventos: React.FC<controlAbrirCerrar> = ({ open, onClose }) =>
 
                             </AccordionDetails>
                         </Accordion>
-                    ))}
+                    ))} */}
                 </Stack>
             </DialogContent>
         </Dialog>
