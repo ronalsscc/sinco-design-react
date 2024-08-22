@@ -32,7 +32,7 @@ export const AdjuntarArchivo = () => {
                 ? {
                   ...item,
                   progress: Math.min(item.progress + 10, 100),
-                  loadingComplete: Math.min(item.progress + 10git add ., 100) === 100,
+                  loadingComplete: Math.min(item.progress + 10, 100) === 100,
                 }
                 : item
             )
