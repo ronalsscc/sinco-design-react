@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { Button, Card, Popover, Stack, Typography } from "@mui/material";
-import { EditarEvento } from '../..';
+import { EditarEvento, EventoProps } from '../..';
 
- interface EventoProps {
-    horaInicio: string;
-    horaFin: string;
-    nombreEvento: string;
-}
 
-export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, nombreEvento }) => {
 
-    const [editar, controlEditar] = React.useState(false);
+export const EventoCalendario = ({ horaInicio, horaFin, nombreEvento }: EventoProps) => {
+
+    const [editar, setEditar] = React.useState(false);
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -18,14 +14,14 @@ export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, n
         setAnchorEl(event.currentTarget);
     }, []);
 
-    const handleClose = React.useCallback(() => {
+    const cierreModal = React.useCallback(() => {
         setAnchorEl(null);
     }, []);;
 
     const EsEditable = React.useCallback(() => {
-        controlEditar(prev => {
+        setEditar(prev => {
             if (prev) {
-                handleClose();
+                cierreModal();
             }
             return !prev;
         });
@@ -36,7 +32,6 @@ export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, n
     return (
         <>
             <Card
-            
                 sx={{
                     backgroundColor: "background.paper",
                     display: "flex",
@@ -59,7 +54,7 @@ export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, n
                         <Typography variant='caption' color="text.secondary">
                             {horaInicio}
                         </Typography>
-                        <Stack alignItems="center" maxWidth="7rem"  justifyContent="center">
+                        <Stack alignItems="center" maxWidth="7rem" justifyContent="center">
                             <Typography
                                 variant='body2'
                                 color="text.primary"
@@ -82,13 +77,13 @@ export const EventoCalendario: React.FC<EventoProps> = ({ horaInicio, horaFin, n
                 id="event-popover"
                 open={open}
                 anchorEl={anchorEl}
-                onClose={handleClose}
+                onClose={cierreModal}
                 anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
             >
-                <Stack width="250px" spacing={1} p={1} > 
+                <Stack width="250px" spacing={1} p={1} >
                     <Typography variant='h6' color={(theme) => theme.palette.primary.main}>
                         {nombreEvento}
                     </Typography>

@@ -1,10 +1,10 @@
 import { Chip, Typography, Stack, Dialog, DialogContent, IconButton } from "@mui/material"
 import { Close, ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import {  controlAbrirCerrar } from "../..";
+import { EventoCalendario, controlAbrirCerrar } from "../..";
 
-export const ListaEventos: React.FC<controlAbrirCerrar> = ({ open, onClose }) => {
-
+export const ListaEventos = ({ open, onClose }: controlAbrirCerrar) => {
+    // const eventosFecha = eventos.filter(evento => moment(evento.fecha).startOf("day").isSame(fecha.startOf("day")))
     return (
         <Dialog
             open={open}
@@ -12,15 +12,14 @@ export const ListaEventos: React.FC<controlAbrirCerrar> = ({ open, onClose }) =>
         >
             <DialogContent >
                 <Stack gap={1} width="100%" alignItems="center" justifyItems="center">
-                    <Stack width="100%" flexDirection="row" justifyContent="space-between" >
+                    <Stack width="100%" minWidth={"12.5rem"} flexDirection="row" justifyContent="space-between" >
                         <Typography variant="h6" color="text.primary">
                             Eventos
                         </Typography>
                         <IconButton onClick={onClose} size="small">
                             <Close fontSize="small" />
                         </IconButton>
-                    </Stack>
-
+                    </Stack> 
                     {/* {Eventoss.map((evento, index) => (
                         <Accordion key={index} defaultExpanded elevation={0} sx={{ width: "100%", boxShadow: "none !important" }} >
                             <AccordionSummary

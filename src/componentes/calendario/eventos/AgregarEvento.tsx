@@ -7,13 +7,13 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Box, Button, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Autocomplete, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton } from "@mui/material";
 
-export const AgregarEvento: React.FC<controlAbrirCerrar> = ({ open, onClose }) => {
+export const AgregarEvento = ({ open, onClose }: controlAbrirCerrar) => {
 
-    const [evento, cambiarEvento] = React.useState('');
-    const [usuario, cambiarUuario] = React.useState<UsuarioProps | null>(null);
+    const [evento, setEvento] = React.useState('');
+    const [usuario, setUsuario] = React.useState<UsuarioProps | null>(null);
 
     const obtenerSeleccionEvento = (evento: SelectChangeEvent) => {
-        cambiarEvento(evento.target.value as string);
+        setEvento(evento.target.value as string);
     };
 
 
@@ -104,7 +104,7 @@ export const AgregarEvento: React.FC<controlAbrirCerrar> = ({ open, onClose }) =
                                         width: "2rem", height: "2rem"
                                     }}
                                     >
-                                        <Typography variant="overline"  color="common.white">CT</Typography>
+                                        <Typography variant="overline" color="common.white">CT</Typography>
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary={option.name} secondary={option.name} />

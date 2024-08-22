@@ -1,161 +1,16 @@
-import React, { useCallback, useState } from 'react';
-import { AgregarEvento } from './eventos/AgregarEvento';
-import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
-import { CalendarioProps, CambioFechaProps, Evento, EventoCalendario, ListaEventos } from '..';
-import { Box, Button, Chip, Stack, Typography, Menu, MenuItem, IconButton } from "@mui/material";
-import { LightModeOutlined, NavigateNext, KeyboardArrowDownOutlined, FilterList, NavigateBefore, CalendarToday } from '@mui/icons-material';
-import moment, { Moment } from 'moment/';
-import { Link } from 'react-router-dom';
 import 'moment/min/moment-with-locales';
-
+import React, { useCallback, useState } from 'react';
+import { Box, Button, Typography, Menu, MenuItem, Stack } from "@mui/material";
+import { KeyboardArrowDownOutlined, FilterList} from '@mui/icons-material';
+import { AgregarEvento, CalendarioProps,  ContenedorDias,  ControlFecha, Evento } from '..';
+import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
+import moment, { Moment } from 'moment/';
 moment().locale('es');
 
-export const ControlFecha: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
-
-    const mesAnterior = useCallback(() => {
-        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
-    }, [fechaActual, cambiarFechaActual]);
-
-    const mesSiguiente = useCallback(() => {
-        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
-    }, [fechaActual, cambiarFechaActual]);
-
-    const resetToToday = useCallback(() => {
-        if (cambiarFechaActual) cambiarFechaActual(moment());
-    }, [cambiarFechaActual]);
-
-    return (
-        <Stack flexDirection='row' p={.5} alignItems='center' justifyContent='space-around' bgcolor="background.paper">
-            <Chip
-                sx={{
-                    backgroundColor: "primary.50"
-                }}
-                icon={<LightModeOutlined color='primary' fontSize='small' />}
-                label="Hoy"
-                onClick={resetToToday}
-            />
-
-            <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
-                <IconButton aria-label="anterior" onClick={mesAnterior} >
-                    <NavigateBefore fontSize='small' color='primary' />
-                </IconButton>
-                <Typography color="primary" variant="h6"> {fechaActual.format('MMMM, YYYY')} </Typography>
-                <IconButton aria-label="anterior" onClick={mesSiguiente} >
-                    <NavigateNext fontSize='small' color="primary" />
-                </IconButton>
-            </Stack>
-            <Stack>
-                <Button startIcon={<CalendarToday fontSize='small' />} size="small" color="primary" variant='outlined' component={Link} to="/vistaDia"> Día </Button>
-            </Stack>
-        </Stack>
-    );
-};
-
-interface ContenedorDiasProps {
-    eventos: Evento[]
-}
-const ContenedorDias = ({ eventos } :ContenedorDiasProps) => {
-
-    const [abrirDrawer, cerrarDrawer] = useState(false);
-
-    const fechaActual = moment();
-
-    const controlDiaEvento = useCallback(() => {
-        cerrarDrawer(prevOpen => !prevOpen);
-    }, []);
-
-    const obtenerDiasAMostrar = useCallback(() => {
-        let diasIteracion = [];
-        const primerDiaDelMes = moment(fechaActual).startOf("month");
-        const ultimoDiaMes = moment(fechaActual).endOf("month");
-
-        for (let day = moment(primerDiaDelMes); day.isSameOrBefore(ultimoDiaMes); day.add(1, "day")) {
-            diasIteracion.push(moment(day));
-        }
-
-        const primerDiaDelSiguienteMes = moment(fechaActual).add(1, "month").startOf("month");
-        const longitudDeDias = diasIteracion.length;
-
-        if ((longitudDeDias / 7) % 1 !== 0) {
-            for (let day = moment(primerDiaDelSiguienteMes); day.day() <= (31 - longitudDeDias); day.add(1, "day")) {
-                diasIteracion.push(moment(day));
-            }
-        }
-        return diasIteracion;
-    }, [fechaActual]);
-
-    const diasDeLaSemana = moment.weekdays();
-    return (
-        <Box width='100%' height={"100%"} maxHeight={"32rem"}
-            boxSizing='border-box' justifyContent="center" gap={0.5} flexWrap='wrap' sx={{ backgroundColor: 'transparent' }}>
-            <Stack display='grid' height={"5%"} gridTemplateColumns="repeat(7, 1fr)" py={1}>
-                {diasDeLaSemana.map((dia, index) => (
-                    <Stack
-                        key={`weekday-${index}`}
-                        flexDirection="row"
-                        alignItems='center'
-                        justifyContent='center'
-                        boxSizing='border-box'
-                        borderRadius={1}
-                    >
-                        <Typography variant='caption' color="text.secondary">
-                            {dia}
-                        </Typography>
-                    </Stack>
-                ))}
-            </Stack>
-
-            <Stack display='grid' height="95%" width="100%" overflow="auto" gridTemplateColumns="repeat(7, 1fr)" gap={.5} >
-                {obtenerDiasAMostrar().map((fecha, index) => {
-                    const eventosFecha = eventos.filter(evento => moment(evento.fecha).startOf("day").isSame(fecha.startOf("day")))
-                    return (
-                        <Box key={index} sx={{
-                            backgroundColor: "background.paper",
-                            ":hover, :focus, :active": {
-                                backgroundColor: (theme) => theme.palette.primary[50],
-                            },
-                        }}
-
-                            height="7rem"
-                            boxSizing='border-box'
-                            display='flex'
-                            textAlign='center'
-                            justifyContent='center'
-                            alignItems='center'
-                            flexDirection='column'
-                            borderRadius={1}
-                            p={.5}
-                            gap={.5}
-                            onDoubleClick={controlDiaEvento}
-                        >
-                            <Stack width="100%" justifyContent='center' alignItems="flex-start" alignContent="center" >
-                                <Typography variant="subtitle2" color='textSecondary' alignContent="center" justifyItems="center" borderRadius={100}
-                                    sx={{
-                                        backgroundColor: fecha.isSame(moment(), 'day') ? 'primary.100' : 'transparent',
-                                        width: "24px",
-                                        height: "24px"
-                                    }}
-                                >{fecha.date()}</Typography>
-                            </Stack>
-                            <Stack height="100%" width="100%" gap={1} sx={{ overflowY: "auto" }}>
-                                {
-                                    eventosFecha.map((eve, index) => <EventoCalendario key={index} {...eve} />)
-                                }
-                            </Stack>
-                        </Box>
-                    )
-                })}
-                <ListaEventos open={abrirDrawer} onClose={controlDiaEvento} />
-            </Stack>
-        </Box>
-    );
-};
 
 export const Calendario = ({ eventos }: CalendarioProps) => {
 
-    const [eventosActuales, setEventosActuales] = useState<Evento[]>(eventos);
-
-
+    const [eventosActuales, setEventosActuales ] = useState<Evento[]>(eventos);
     const [open, setOpen] = useState(false);
     const [anchorEl, cambiarAnchor] = useState<null | HTMLElement>(null);
     const [anchorMesEl, cambiarAnchorMes] = useState<null | HTMLElement>(null);
@@ -243,7 +98,7 @@ export const Calendario = ({ eventos }: CalendarioProps) => {
             </Box>
 
             <ControlFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
-            <ContenedorDias eventos={eventosActuales} />
+            <ContenedorDias eventos={eventosActuales} fechaActual={fechaActual}  />
             <AgregarEvento open={open} onClose={abrirCerrarDrawer} />
         </Box>
     );

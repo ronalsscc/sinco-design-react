@@ -1,10 +1,18 @@
 import { createTheme } from '@mui/material/styles';
-import { themeAdproOptions, themeOptions } from './theme';
+import { ADPROTheme, ERPTheme } from './theme';
+
+// export const SincoTheme = createTheme({
+//   ...themeOptions,
+// });
+
+// export const AdproSincoTheme = createTheme({
+//   ...themeAdproOptions,
+// });
 
 export const SincoTheme = createTheme({
-  ...themeOptions,
-});
+  ...ERPTheme
+})
 
 export const AdproSincoTheme = createTheme({
-  ...themeAdproOptions,
-});
+  ...ADPROTheme
+})

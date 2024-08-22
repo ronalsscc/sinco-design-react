@@ -7,9 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Button, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Autocomplete, ListItem, ListItemAvatar, ListItemText, Avatar, Dialog, DialogContent, DialogActions, Chip, Popover } from "@mui/material";
 import { Clear } from '@mui/icons-material';
 
-
-
-export const EditarEvento: React.FC<controlAbrirCerrar> = ({ open, onClose }) => {
+export const EditarEvento = ({ open, onClose }: controlAbrirCerrar) => {
 
     const [evento, cambiarEvento] = React.useState('');
     const [usuario, cambiarUsuario] = React.useState<UsuarioProps | null>(null);

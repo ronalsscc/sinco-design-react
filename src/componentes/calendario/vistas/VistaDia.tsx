@@ -3,12 +3,12 @@ import { useCallback, useMemo, useState } from "react";
 import { Stack, Typography, Divider, IconButton, Chip } from "@mui/material";
 import { LightModeOutlined, NavigateBefore, NavigateNext, ArrowBackIos } from "@mui/icons-material";
 import { Link } from 'react-router-dom';
-import { CambioFechaProps, EventoCalendario } from "../..";
+import { CambioFechaProps } from "../..";
 
 import 'moment/min/moment-with-locales.js';
 moment.locale('es');
 
-const ControlFechaPorDia: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFechaActual }) => {
+const ControlFechaPorDia = ({ fechaActual, cambiarFechaActual }: CambioFechaProps) => {
 
     const mesAnterior = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
@@ -17,6 +17,10 @@ const ControlFechaPorDia: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFe
     const mesSiguiente = useCallback(() => {
         if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
     }, [fechaActual, cambiarFechaActual]);
+
+    const retornarFechaActual = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment());
+    }, [cambiarFechaActual]);
 
     return (
         <Stack flexDirection='row' alignItems='center' p={1} justifyContent='space-between' gap={1} bgcolor="background.paper" >
@@ -35,9 +39,14 @@ const ControlFechaPorDia: React.FC<CambioFechaProps> = ({ fechaActual, cambiarFe
                 </IconButton>
             </Stack>
 
-            <Chip sx={{
-                backgroundColor: "primary.50"
-            }} icon={<LightModeOutlined color='primary' fontSize='small' />} label="Hoy" />
+            <Chip
+                label="Hoy"
+                icon={<LightModeOutlined color='primary' fontSize='small' />}
+                onClick={retornarFechaActual}
+                sx={{
+                    backgroundColor: "primary.50"
+                }}
+            />
 
         </Stack>
     );
@@ -75,7 +84,7 @@ export const VistaDia = () => {
                                 backgroundColor: 'primary.50'
                             },
                         }} >
-                        <EventoCalendario horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' />
+                        {/* <EventoCalendario horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' /> */}
                     </Stack>
                 </Stack>
             ))}

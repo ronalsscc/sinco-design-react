@@ -1,1 +1,1 @@
-export * from './Adjuntar';
+export * from './AdjuntarArchivos';

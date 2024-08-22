@@ -1,11 +1,13 @@
 import React from "react";
 import type { } from "@mui/x-data-grid/themeAugmentation";
 import { Components } from "@mui/material";
+
 import {
   InfoRounded,
   CheckCircleRounded,
   WarningRounded,
   ErrorRounded,
+  Html,
 } from "@mui/icons-material";
 
 export const components: Components = {
@@ -284,7 +286,6 @@ export const components: Components = {
       sizeMedium: {
         height: 20,
       },
-
       root: {
         fontFamily: "Roboto",
         fontSize: "11px",
@@ -293,6 +294,7 @@ export const components: Components = {
         letterSpacing: "0.16px",
         height: "inherit",
         borderRadius: 4,
+        // backgroundColor: theme.palette.primary[100] ,
         ".MuiChip-deleteIconXsmall": {
           height: 12,
           width: 12,
