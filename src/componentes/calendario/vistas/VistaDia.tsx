@@ -1,9 +1,9 @@
 import moment, { Moment } from 'moment/';
 import { useCallback, useMemo, useState } from "react";
 import { Stack, Typography, Divider, IconButton, Chip } from "@mui/material";
-import { LightModeOutlined, NavigateBefore, NavigateNext, ArrowBackIos } from "@mui/icons-material";
+import { LightModeOutlined, NavigateBefore, NavigateNext, ArrowBack } from "@mui/icons-material";
 import { Link } from 'react-router-dom';
-import { CambioFechaProps } from "../..";
+import { CambioFechaProps, EventoCalendario } from "../..";
 
 import 'moment/min/moment-with-locales.js';
 moment.locale('es');
@@ -24,10 +24,10 @@ const ControlFechaPorDia = ({ fechaActual, cambiarFechaActual }: CambioFechaProp
 
     return (
         <Stack flexDirection='row' alignItems='center' p={1} justifyContent='space-between' gap={1} bgcolor="background.paper" >
-            <IconButton component={Link} to="/" >
-                <ArrowBackIos fontSize='small' color='primary' />
-            </IconButton>
 
+            <IconButton size='medium' component={Link} to="/" >
+                <NavigateBefore fontSize='medium' color='primary' />
+            </IconButton>
 
             <Stack flexDirection='row' gap={1} justifyContent='center' alignItems='center'>
                 <IconButton onClick={mesAnterior} >
@@ -52,16 +52,16 @@ const ControlFechaPorDia = ({ fechaActual, cambiarFechaActual }: CambioFechaProp
     );
 };
 
-export const VistaDia = () => {
 
-    const intervaloTiempo = useMemo(() => {
+export const VistaDia = () => {
+    const intervaloTiempo = useMemo<string[]>(() => {
         const horaInicio = moment().startOf('day').hour(8);
         const horaFin = moment().startOf('day').hour(18);
-        const hours = [];
+        const hours: string[] = [];
 
         let currentHour = horaInicio.clone();
         while (currentHour <= horaFin) {
-            hours.push(currentHour.format('H'));
+            hours.push(currentHour.format('H')); 
             currentHour.add(1, 'hour');
         }
         return hours;
@@ -84,7 +84,7 @@ export const VistaDia = () => {
                                 backgroundColor: 'primary.50'
                             },
                         }} >
-                        {/* <EventoCalendario horaInicio='9:00am' horaFin="2:00pm" descripcion='Capacitacion Obligatoria' /> */}
+                        <EventoCalendario horaInicio='9:00am' horaFin="2:00pm" nombreEvento='Capacitacion Obligatoria' />
                     </Stack>
                 </Stack>
             ))}

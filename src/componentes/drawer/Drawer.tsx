@@ -78,14 +78,14 @@ export const DrawerComponent = ({
           direction="row"
           py={1.5}
           px={1}
-          bgcolor={headerColor}
+          bgcolor={"primary" || headerColor}
         >
           <Typography color={color} variant="h6">
             {title}
           </Typography>
 
           <IconButton onClick={onClose} size="small">
-            <Close fontSize="small"  />
+            <Close fontSize="inherit" />
           </IconButton>
         </Stack>
 

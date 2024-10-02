@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { CambioFechaProps } from '../..';
 import moment from 'moment/';
 import 'moment/min/moment-with-locales';
-
 moment().locale('es');
 
 export const ControlFecha = ({ fechaActual, cambiarFechaActual }: CambioFechaProps) => {

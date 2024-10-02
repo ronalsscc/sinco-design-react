@@ -1,11 +1,25 @@
 import * as React from 'react';
 import moment from 'moment';
-import { UsuarioProps, Usuarios, controlAbrirCerrar } from '../..';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Button, Typography, TextField, Stack, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Autocomplete, ListItem, ListItemAvatar, ListItemText, Avatar, Dialog, DialogContent, DialogActions, Chip, Popover } from "@mui/material";
 import { Clear } from '@mui/icons-material';
+import { controlAbrirCerrar } from '../..';
+
+export interface UsuarioProps {
+    id: number;
+    name: string;
+    cargo: string;
+    avatar: string;
+}
+
+export const Usuarios: UsuarioProps[] = [
+    { id: 1, name: 'María Paula García Romero', cargo: 'Contador publico', avatar: 'https://via.placeholder.com/40' },
+    { id: 2, name: 'Diana Álvarez Cárdenas', cargo: 'Scrum master', avatar: 'https://via.placeholder.com/40' },
+    { id: 3, name: 'Camila María Torres Alvarado', cargo: 'Auxiliar administrativo', avatar: 'https://via.placeholder.com/40' },
+];
+
 
 export const EditarEvento = ({ open, onClose }: controlAbrirCerrar) => {
 

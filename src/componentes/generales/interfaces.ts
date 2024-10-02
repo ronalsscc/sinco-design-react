@@ -34,6 +34,7 @@ export interface CalendarioProps {
 
 export interface ContenedorDiasProps extends CambioFechaProps {
     eventos: Evento[];
+    fechaActual: Moment;
 }
 
 export interface controlAbrirCerrar {
@@ -47,15 +48,3 @@ export  interface EventoProps {
     nombreEvento: string;
 }
 
-export interface UsuarioProps {
-    id: number;
-    name: string;
-    cargo: string;
-    avatar: string;
-}
-
-export const Usuarios: UsuarioProps[] = [
-    { id: 1, name: 'María Paula García Romero', cargo: 'Contador publico', avatar: 'https://via.placeholder.com/40' },
-    { id: 2, name: 'Diana Álvarez Cárdenas', cargo: 'Scrum master', avatar: 'https://via.placeholder.com/40' },
-    { id: 3, name: 'Camila María Torres Alvarado', cargo: 'Auxiliar administrativo', avatar: 'https://via.placeholder.com/40' },
-];

@@ -1,10 +1,15 @@
 import { useCallback, useState } from 'react';
 import { Box, Stack, Typography } from "@mui/material";
 import moment, { Moment } from 'moment';
-import { ContenedorDiasProps } from '../..';
+import { Evento } from '../..';
 import { EventoCalendario, ListaEventos } from '..';
 
-export const ContenedorDias = ({fechaActual, eventos }: ContenedorDiasProps) => {
+
+ interface ContenedorDiasProps {
+    eventos: Evento[];
+}
+
+ export const VistaMes = ({ eventos }: ContenedorDiasProps) => {
 
     const [abrirDrawer, cerrarDrawer] = useState(false);
     
@@ -12,9 +17,10 @@ export const ContenedorDias = ({fechaActual, eventos }: ContenedorDiasProps) => 
         cerrarDrawer(prevOpen => !prevOpen);
     }, []);
     
+    const fechaActual: Moment = moment();
 
     const obtenerDiasAMostrar = useCallback(() => {
-        let diasIteracion = [];
+        let diasIteracion: Moment[] = [];
         const primerDiaDelMes = moment(fechaActual).startOf("month");
         const ultimoDiaMes = moment(fechaActual).endOf("month");
 

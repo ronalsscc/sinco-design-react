@@ -1,12 +1,16 @@
-// opcion 1 
-
 import { useState, useCallback, useEffect } from "react";
 import { AttachFile, Autorenew, CancelOutlined, Delete, DeleteOutline, UploadFileOutlined } from "@mui/icons-material";
-import { Box, Button, IconButton, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, LinearProgress, Stack, SxProps, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
-import { SincoTheme } from "../../Theme";
 
-export const AdjuntarArchivo = () => {
+export interface AdjuntarProps {
+  fecthDB: (archivos: File[]) => any;
+  compact?: boolean;
+  sx?: SxProps;
+}
+
+export const AdjuntarArchivo = ({ compact, sx, fecthDB }: AdjuntarProps) => {
+
   const [archivos, setArchivos] = useState<
     { file: File; progress: number; loadingComplete: boolean }[]
   >(() => {
@@ -21,8 +25,10 @@ export const AdjuntarArchivo = () => {
   });
 
   useEffect(() => {
-    const intervalos: number[] = [];
-  
+    setArchivos([])
+  }, []);
+
+  useEffect(() => {
     archivos.forEach((archivo, index) => {
       if (archivo.progress < 100) {
         const intervalo = setInterval(() => {
@@ -38,14 +44,12 @@ export const AdjuntarArchivo = () => {
             )
           );
         }, 1000);
-  
-        intervalos.push(intervalo);
+
+        return () => clearInterval(intervalo);
       }
     });
-  
-    return () => intervalos.forEach(clearInterval);
   }, [archivos]);
-  
+
   const validarArchivoDuplicado = (file: File) => {
     const archivoDuplicado = archivos.some(
       (archivoExistente) => archivoExistente.file.name === file.name
@@ -82,7 +86,7 @@ export const AdjuntarArchivo = () => {
     },
   });
 
-  const Delete = useCallback(
+  const Eliminar = useCallback(
     (index: number) => {
       setArchivos((prevFiles) => {
         const actualizarArchivos = prevFiles.filter(
@@ -129,24 +133,33 @@ export const AdjuntarArchivo = () => {
     [setArchivos]
   );
 
+  const controlEventoAdjuntar = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    fecthDB(archivos.map((e) => e.file));
+    setArchivos([]);
+    localStorage.removeItem("archivos");
+  };
 
   return (
-    <Stack width={"100%"} alignItems="center" bgcolor="transparent" height="100%" gap={1}>
+    <Stack width="100%" alignItems="center" bgcolor="transparent" height="100%" gap={1} >
       <Stack
         id="dropzone"
         alignItems="center"
+        flexDirection={compact === true ? "row" : "column"}
         justifyContent="center"
         bgcolor="transparent"
         width="100%"
+        boxShadow={1}
         gap={1}
         borderRadius={1}
         py={3}
         sx={{
-          border: `1px dashed ${SincoTheme.palette.grey[500]}`,
+          border: (theme) => `1px dashed ${theme.palette.grey[500]}`,
           cursor: "pointer",
           ":hover": {
             backgroundColor: "action.hover",
           },
+          ...sx
         }}
         {...getRootProps()}
       >
@@ -160,7 +173,10 @@ export const AdjuntarArchivo = () => {
             DOCX, XML, PNG, JPG • Max 00 MB
           </Typography>
         </Stack>
-        <Button size="small" startIcon={<AttachFile fontSize="inherit" />}>
+
+        <Button size="small" startIcon={<AttachFile fontSize="inherit" />}
+          onClick={controlEventoAdjuntar}
+        >
           Adjuntar
         </Button>
       </Stack>
@@ -170,6 +186,7 @@ export const AdjuntarArchivo = () => {
         width="100%"
         height="auto"
         gap={1}
+
         sx={{
           overflowY: "auto",
         }}
@@ -206,7 +223,7 @@ export const AdjuntarArchivo = () => {
                   <Typography variant="body2" color="text.primary">
                     {file.name}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography id="estado-carga-completo" variant="caption" color="text.secondary">
                     {loadingComplete
                       ? `${new Date().toLocaleDateString()} • ${Math.round(file.size / 1024)} KB`
                       : `  Cargando... • ${Math.round(file.size / 1024)} KB`
@@ -214,6 +231,7 @@ export const AdjuntarArchivo = () => {
                   </Typography>
                   {!loadingComplete && (
                     <LinearProgress
+                      id="barra-progreso"
                       color="primary"
                       variant="determinate"
                       value={progress}
@@ -228,24 +246,26 @@ export const AdjuntarArchivo = () => {
                 <>
                   <IconButton
                     id="editarArchivo"
-                    color="default"
+
                     size="small"
                     onClick={() => Editar(index)}
                   >
-                    <Autorenew fontSize="small" />
+                    <Autorenew fontSize="small" color="action" />
                   </IconButton>
                   <IconButton
+
                     id="EliminarArchivo"
-                    color="default"
                     size="small"
-                    onClick={() => Delete(index)}
+                    onClick={() => Eliminar(index)}
                   >
-                    <DeleteOutline fontSize="small" />
+                    <CancelOutlined fontSize="small" color="action" />
                   </IconButton>
                 </>
               ) : (
-                <IconButton size="medium" onClick={() => Delete(index)}>
-                  <CancelOutlined fontSize="small" />
+                <IconButton size="medium" onClick={() => Eliminar(index)}>
+                  <DeleteOutline fontSize="small"
+                    color="action"
+                  />
                 </IconButton>
               )}
             </Box>

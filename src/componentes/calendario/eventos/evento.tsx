@@ -84,7 +84,7 @@ export const EventoCalendario = ({ horaInicio, horaFin, nombreEvento }: EventoPr
                 }}
             >
                 <Stack width="250px" spacing={1} p={1} >
-                    <Typography variant='h6' color={(theme) => theme.palette.primary.main}>
+                    <Typography variant='h6' color={`${(theme) => theme.palette.primary.main}`}>
                         {nombreEvento}
                     </Typography>
                     <Typography variant='subtitle2' color="text.secondary">

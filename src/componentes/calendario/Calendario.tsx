@@ -1,16 +1,64 @@
 import 'moment/min/moment-with-locales';
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Typography, Menu, MenuItem, Stack } from "@mui/material";
-import { KeyboardArrowDownOutlined, FilterList} from '@mui/icons-material';
-import { AgregarEvento, CalendarioProps,  ContenedorDias,  ControlFecha, Evento } from '..';
+import { Box, Button, Typography, Menu, MenuItem, Stack, Chip, IconButton } from "@mui/material";
+import { KeyboardArrowDownOutlined, FilterList, LightModeOutlined, NavigateBefore, NavigateNext, CalendarToday } from '@mui/icons-material';
+import { AgregarEvento, CalendarioProps, CambioFechaProps, Evento, VistaDia, VistaMes } from '..';
 import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
 import moment, { Moment } from 'moment/';
 moment().locale('es');
 
+const ControlFecha = ({ fechaActual, cambiarFechaActual }: CambioFechaProps) => {
+
+    const mesAnterior = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).subtract(1, 'months'));
+    }, [fechaActual, cambiarFechaActual]);
+
+    const mesSiguiente = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment(fechaActual).add(1, 'months'));
+    }, [fechaActual, cambiarFechaActual]);
+
+    const retornarFechaActual = useCallback(() => {
+        if (cambiarFechaActual) cambiarFechaActual(moment());
+    }, [cambiarFechaActual]);
+
+
+
+    return (
+        <Stack flexDirection='row' p={.5} alignItems='center' justifyContent='space-around' bgcolor="background.paper">
+            <Chip
+                sx={{
+                    backgroundColor: "grey.200",
+                    color: "text.secondary",
+                    "&:hover": {
+                        backgroundColor: "grey.100"
+                    }
+                }}
+                icon={<LightModeOutlined fontSize='small' />}
+                label="Hoy"
+                onClick={retornarFechaActual}
+            />
+
+            <Stack flexDirection='row' flex={1} gap={1} justifyContent='center' alignItems='center'>
+                <IconButton aria-label="anterior" onClick={mesAnterior} >
+                    <NavigateBefore fontSize='small' color='primary' />
+                </IconButton>
+                <Typography color="primary" variant="h6"> {fechaActual.format('MMMM, YYYY')} </Typography>
+                <IconButton aria-label="anterior" onClick={mesSiguiente} >
+                    <NavigateNext fontSize='small' color="primary" />
+                </IconButton>
+            </Stack>
+            <Stack>
+                <Button
+                    startIcon={<CalendarToday fontSize='small' />} size="small" color="primary" variant='outlined' > Día </Button>
+            </Stack>
+        </Stack>
+    );
+};
 
 export const Calendario = ({ eventos }: CalendarioProps) => {
 
-    const [eventosActuales, setEventosActuales ] = useState<Evento[]>(eventos);
+    const [vistaActual, setVistaActual] = useState(true);
+    const [eventosActuales, setEventosActuales] = useState<Evento[]>(eventos);
     const [open, setOpen] = useState(false);
     const [anchorEl, cambiarAnchor] = useState<null | HTMLElement>(null);
     const [anchorMesEl, cambiarAnchorMes] = useState<null | HTMLElement>(null);
@@ -96,10 +144,19 @@ export const Calendario = ({ eventos }: CalendarioProps) => {
                     <Button size="small" color="primary" variant='contained' onClick={abrirCerrarDrawer}>Nuevo evento</Button>
                 </Box>
             </Box>
+{/* 
+            {vistaActual ? (
+                <>
+                </>
+            ) : (
+                <VistaDia />
+            )} */}
 
             <ControlFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
-            <ContenedorDias eventos={eventosActuales} fechaActual={fechaActual}  />
+            <VistaMes eventos={eventosActuales} />
             <AgregarEvento open={open} onClose={abrirCerrarDrawer} />
+
         </Box>
     );
 };
+
