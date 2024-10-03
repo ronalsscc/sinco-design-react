@@ -1,15 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import { SincoTheme } from './Theme';
-import { AdjuntarArchivo, Calendario, VistaDia } from '.';
-import { Avatar, Chip, Fab, ThemeProvider } from '@mui/material';
+import { Calendario, VistaDia } from '.';
+import { ThemeProvider } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import "./main.css";
 import moment from 'moment';
-// import FullFeaturedCrudGrid from './componentes/Adjuntar/EjemploAdjuntar';
-import { AddIcCallOutlined } from '@mui/icons-material';
 import { SincoTheme } from './Theme';
-// import { SincoTheme } from '@sinco/react';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={SincoTheme}>

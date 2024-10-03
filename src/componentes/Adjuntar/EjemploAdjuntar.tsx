@@ -56,7 +56,7 @@ export const EjemploAdjuntar = () => {
                         onClose={handleClose}
                         items={items}
                         getItemLabel={(item) => item.color}
-                        filterFunction={customFilterFunction}
+                        handleFilter={customFilterFunction}
                     /> 
                     {/* fin del componente multiSelect */}
 

@@ -2,7 +2,7 @@ import 'moment/min/moment-with-locales';
 import React, { useCallback, useState } from 'react';
 import { Box, Button, Typography, Menu, MenuItem, Stack, Chip, IconButton } from "@mui/material";
 import { KeyboardArrowDownOutlined, FilterList, LightModeOutlined, NavigateBefore, NavigateNext, CalendarToday } from '@mui/icons-material';
-import { AgregarEvento, CalendarioProps, CambioFechaProps, Evento, VistaDia, VistaMes } from '..';
+import { AgregarEvento, CalendarioProps, CambioFechaProps, Evento, VistaMes } from '..';
 import CalendarICon from '../../assets/icons/svgs/Calendario.svg';
 import moment, { Moment } from 'moment/';
 moment().locale('es');
@@ -56,7 +56,6 @@ const ControlFecha = ({ fechaActual, cambiarFechaActual }: CambioFechaProps) => 
 };
 
 export const Calendario = ({ eventos }: CalendarioProps) => {
-
     const [vistaActual, setVistaActual] = useState(true);
     const [eventosActuales, setEventosActuales] = useState<Evento[]>(eventos);
     const [open, setOpen] = useState(false);
@@ -144,13 +143,6 @@ export const Calendario = ({ eventos }: CalendarioProps) => {
                     <Button size="small" color="primary" variant='contained' onClick={abrirCerrarDrawer}>Nuevo evento</Button>
                 </Box>
             </Box>
-{/* 
-            {vistaActual ? (
-                <>
-                </>
-            ) : (
-                <VistaDia />
-            )} */}
 
             <ControlFecha fechaActual={fechaActual} cambiarFechaActual={cambiarFechaActual} />
             <VistaMes eventos={eventosActuales} />
