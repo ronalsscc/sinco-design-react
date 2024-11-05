@@ -1,15 +1,18 @@
 import React from 'react';
 import { Calendar, momentLocalizer, Views, Event, stringOrDate } from 'react-big-calendar';
-import moment from 'moment';
+import { CalendarToolbar, getMessagesES } from '.';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import moment from 'moment'
+import 'moment-timezone'
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
-interface BigCalendarProps {
+interface SincoCalendarProps {
     events: Event[];
-    startAccessor?: (event: Event)=> Date;
-    endAccessor?: (event: Event)=> Date;
+    startAccessor?: string | ((event: Event) => Date);
+    endAccessor?: string | ((event: Event) => Date);
     titleAccessor?: string;
     defaultView?: Views;
     selectable?: boolean;
@@ -21,11 +24,10 @@ interface BigCalendarProps {
         end: stringOrDate;
         slots: Date[];
     }) => void;
-    [key: string]: any; 
+    [key: string]: any;
 };
 
-const MiCalendario: React.FC<BigCalendarProps> = ({
-    events,
+export function SincoCalendar({ events,
     startAccessor = 'start',
     endAccessor = 'end',
     titleAccessor = 'title',
@@ -35,10 +37,11 @@ const MiCalendario: React.FC<BigCalendarProps> = ({
     onSelectSlot,
     onDoubleClickEvent,
     onShowMore,
-    ...props
-}) => {
+    ...props }: SincoCalendarProps) {
+
     return (
         <Calendar
+            culture='es'
             localizer={localizer}
             events={events}
             startAccessor={startAccessor}
@@ -46,13 +49,48 @@ const MiCalendario: React.FC<BigCalendarProps> = ({
             titleAccessor={titleAccessor}
             defaultView={defaultView}
             selectable={selectable}
+            messages={getMessagesES()}
             onSelectEvent={onSelectEvent}
             onSelectSlot={onSelectSlot}
             onDoubleClickEvent={onDoubleClickEvent}
             onShowMore={onShowMore}
+            components={{
+                toolbar: CalendarToolbar
+            }}
             {...props}
         />
-    );
-};
+    )
 
-export default MiCalendario;
+}
+
+//     events,
+//     startAccessor = 'start',
+//     endAccessor = 'end',
+//     titleAccessor = 'title',
+//     defaultView = Views.MONTH,
+//     selectable = true,
+//     onSelectEvent,
+//     onSelectSlot,
+//     onDoubleClickEvent,
+//     onShowMore,
+//     ...props
+// }) => {
+//     return (
+//         <Calendar
+//             localizer={localizer}
+//             events={events}
+//             startAccessor={startAccessor}
+//             endAccessor={endAccessor}
+//             titleAccessor={titleAccessor}
+//             defaultView={defaultView}
+//             selectable={selectable}
+//             onSelectEvent={onSelectEvent}
+//             onSelectSlot={onSelectSlot}
+//             onDoubleClickEvent={onDoubleClickEvent}
+//             onShowMore={onShowMore}
+//             {...props}
+//         />
+//     );
+// };
+
+// export default MiCalendario;
