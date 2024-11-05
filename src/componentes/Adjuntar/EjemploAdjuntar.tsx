@@ -50,6 +50,8 @@ export const EjemploAdjuntar = () => {
 
                     {/*      Inicio componente MultiSelect */}
 
+
+                    <Button onClick={handleOpen} >show multiSelect</Button>
                     <MultiSelect
                         anchorEl={anchorEl}
                         open={open}

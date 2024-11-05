@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { IconButton, Stack, Typography, Drawer, SxProps } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -23,10 +23,12 @@ export interface DrawerComponentProperties {
   open: boolean;
   onClose: () => void;
   sx?: SxProps;
+  sxContent?: SxProps;
   sxActions?: SxProps;
   backgroundColor?: string;
   color?: string;
   headerColor?: string;
+  closeIcon?: string,
 }
 
 export const DrawerComponent = ({
@@ -36,20 +38,23 @@ export const DrawerComponent = ({
   headerColor,
   children,
   actions,
-  showActions,
+  showActions = false,
   sxActions,
+  closeIcon,
   anchor = "left",
   anchorActions = "flex-end",
   width,
   open,
   onClose,
   sx,
+  sxContent
 }: DrawerComponentProperties) => {
+
   const [stateActions, setActionsState] = useState(showActions);
 
-  const handleDrawerActions = () => {
+  const handleDrawerActions = useCallback(() => {
     setActionsState(true);
-  };
+  }, []);
 
   const paperSx: SxProps = borderStyles[anchor];
 
@@ -78,23 +83,30 @@ export const DrawerComponent = ({
           direction="row"
           py={1.5}
           px={1}
-          bgcolor={"primary" || headerColor}
+          sx={{
+            backgroundColor: headerColor || "secondary.main",
+          }}
         >
-          <Typography color={color} variant="h6">
+          <Typography color={color || "background.paper"} variant="h6">
             {title}
           </Typography>
 
-          <IconButton onClick={onClose} size="small">
-            <Close fontSize="inherit" />
+          <IconButton onClick={onClose} size="small" sx={{
+            color: closeIcon || "brackground.paper"
+          }}>
+            <Close
+              fontSize="inherit"
+            />
           </IconButton>
         </Stack>
 
         <Stack
           sx={{
-            backgroundColor: backgroundColor,
+            backgroundColor: backgroundColor || "background.paper",
+            ...sxContent
           }}
-          py={1.5}
-          px={1}
+          py={2}
+          px={1.5}
           overflow="auto"
           flex={1}
           onClick={handleDrawerActions}
@@ -119,3 +131,4 @@ export const DrawerComponent = ({
   );
 };
 export { DrawerComponent as Drawer };
+

@@ -1,58 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Calendario, VistaDia } from '.';
-import { ThemeProvider } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Box, Stack, ThemeProvider } from '@mui/material';
 import moment from 'moment';
+import './main.css';
 import { SincoTheme } from './Theme';
+import MiCalendario from './componentes/SincoCalendar/SincoCalendar';
+// import { SincoTheme } from '@sinco/react';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider theme={SincoTheme}>
     <React.StrictMode>
-      <Router>
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <Calendario eventos={[
-                {
-                  fecha: moment("29/08/2023", "DD/MM/YYYY").toDate(),
-                  horaFin: "10:00 am ",
-                  horaInicio: "12:00 pm",
-                  nombreEvento: "Big calendar",
-                  organizador: "Sebastian Vera"
-                },
-                {
-                  fecha: moment().toDate(),
-                  horaFin: "10:00 am ",
-                  horaInicio: "12:00 pm",
-                  nombreEvento: "Investigacion ",
-                  organizador: "Sebastian Vera"
-                },
-                {
-                  fecha: moment("19/08/2024", "DD/MM/YYYY").toDate(),
-                  horaFin: "de",
-                  horaInicio: "fr",
-                  nombreEvento: "Capacitacion ",
-                  organizador: "Sebastian Vrra"
-                },
-                {
-                  fecha: moment("9/08/2024", "DD/MM/YYYY").toDate(),
-                  horaFin: "11:00 am",
-                  horaInicio: "4:00pm",
-                  nombreEvento: "Calendar",
-                  organizador: "Sebastian Vera"
-                },
-              ]} />
-            } 
-          />
-          <Route path="/VistaDia" element={<VistaDia />} />
-        </Routes>
-      </Router>
 
-      {/* Other components */}
-      {/* <AdjuntarArchivo fecthDB={console.log} /> */}
-      {/* <DisableStopEditModeOnFocusOut /> */}
+<Box height={800}>
+<MiCalendario events={[
+          {
+            title: 'Reunión de equipo',
+            start: moment().set({ hour: 10, minute: 0 }).toDate(),
+            end: moment().set({ hour: 11, minute: 30 }).toDate(),
+            // desc: 'Reunión semanal para revisar el progreso del proyecto',
+          },
+          {
+            title: 'Presentación de resultados',
+            start: moment().add(1, 'day').set({ hour: 14, minute: 0 }).toDate(),
+            end: moment().add(1, 'day').set({ hour: 15, minute: 0 }).toDate(),
+            // desc: 'Presentación de resultados trimestrales a la directiva',
+          },
+      ]} />
+</Box>
 
 
     </React.StrictMode>

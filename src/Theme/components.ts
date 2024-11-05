@@ -1,6 +1,6 @@
 import React from "react";
 import type { } from "@mui/x-data-grid/themeAugmentation";
-import { Components, Theme } from "@mui/material";
+import { Components, Theme, alpha } from "@mui/material";
 import {
   InfoRounded,
   CheckCircleRounded,
@@ -747,9 +747,73 @@ export const components: Components<Theme> = {
       }
     }
   },
+  // MuiButton: {
+  //   styleOverrides: {
+  //     root: {
+  //       fontFamily: "Roboto",
+  //       textTransform: "unset",
+  //       fontWeightLight: 300,
+  //       fontSize: "13px",
+  //       lineHeight: "normal",
+  //       "@media(max-width: 885px)": {
+  //         fontSize: 14,
+  //       },
+  //     },
+  //     startIcon: {
+  //       marginLeft: 2,
+  //     },
+  //     endIcon: {
+  //       marginRight: 2,
+  //     },
+  //     sizeSmall: {
+  //       height: 26,
+  //       ".MuiSvgIcon-fontSizeSmall": {
+  //         height: 16,
+  //         width: 16,
+  //       },
+  //       ".MuiSvgIcon-fontSizeMedium": {
+  //         height: 18,
+  //         width: 18,
+  //       },
+  //       ".MuiSvgIcon-fontSizeLarge": {
+  //         height: 20,
+  //         width: 20,
+  //       },
+  //     },
+  //     sizeMedium: {
+  //       height: 32,
+  //       ".MuiSvgIcon-fontSizeSmall": {
+  //         height: 16,
+  //         width: 16,
+  //       },
+  //       ".MuiSvgIcon-fontSizeMedium": {
+  //         height: 18,
+  //         width: 18,
+  //       },
+  //       ".MuiSvgIcon-fontSizeLarge": {
+  //         height: 20,
+  //         width: 20,
+  //       },
+  //     },
+  //     sizeLarge: {
+  //       height: 38,
+  //       ".MuiSvgIcon-fontSizeSmall": {
+  //         height: 16,
+  //         width: 16,
+  //       },
+  //       "&.MuiSvgIcon-fontSizeMedium": {
+  //         height: 18,
+  //         width: 18,
+  //       },
+  //     },
+  //   },
+  // },
   MuiButton: {
+    defaultProps: {
+      color: "primary"
+    },
     styleOverrides: {
-      root: {
+      root: ({ theme }) => ({
         fontFamily: "Roboto",
         textTransform: "unset",
         fontWeightLight: 300,
@@ -758,7 +822,7 @@ export const components: Components<Theme> = {
         "@media(max-width: 885px)": {
           fontSize: 14,
         },
-      },
+      }),
       startIcon: {
         marginLeft: 2,
       },
@@ -935,6 +999,12 @@ export const components: Components<Theme> = {
   },
   MuiIconButton: {
     styleOverrides: {
+      root: ({ theme }) => ({
+        color: theme.palette.action.active,
+        "&:hover": {
+          backgroundColor: alpha(theme.palette.action.active, 0.04),
+        }
+      }),
       sizeSmall: {
         padding: 3,
       },
@@ -945,6 +1015,7 @@ export const components: Components<Theme> = {
         padding: 12,
       },
     },
+
   },
   MuiFilledInput: {
     styleOverrides: {
@@ -956,6 +1027,32 @@ export const components: Components<Theme> = {
       },
     },
   },
+  // MuiInputBase: {
+  //   defaultProps: {
+  //     margin: "none",
+  //   },
+  //   styleOverrides: {
+  //     root: {
+  //       "&.MuiInput-underline": {
+  //         marginTop: 9,
+  //       },
+  //       ".MuiOutlinedInput-input.MuiInputBase-inputSizeSmall": {
+  //         paddingBlock: 6.66,
+  //       },
+  //       ".MuiOutlinedInput-input": {
+  //         paddingBlock: 14,
+  //       },
+  //       ".MuiFilledInput-input.MuiInputBase-inputSizeSmall": {
+  //         padding: "0 4px !important",
+  //       },
+  //       ".MuiFilledInput-input": {
+  //         paddingTop: 22,
+  //         paddingBottom: 6,
+  //       },
+  //     },
+  //   },
+  // },
+
   MuiInputBase: {
     defaultProps: {
       margin: "none",
@@ -1012,6 +1109,50 @@ export const components: Components<Theme> = {
       },
     },
   },
+  // MuiInputLabel: {
+  //   styleOverrides: {
+  //     asterisk: {
+  //       color: "#D14343",
+  //     },
+  //     root: {
+  //       display: "flex",
+  //       gap: ".2rem",
+  //       flexDirection: "row-reverse",
+  //       fontSize: 13,
+  //       fontStyle: "normal",
+  //       fontWeight: 400,
+  //       letterSpacing: "0.15px",
+  //     },
+  //     filled: {
+  //       "&.MuiInputLabel-filled.MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink)":
+  //       {
+  //         transform: "translate(12px,9px) scale(1)",
+  //       },
+  //     },
+  //     standard: {
+  //       "&.MuiInputLabel-standard.MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink)":
+  //       {
+  //         transform: "translate(0, 15px) scale(1)",
+  //       },
+  //     },
+  //     outlined: {
+  //       "&.MuiInputLabel-outlined.MuiInputLabel-sizeSmall ": {
+  //         transform: "translate(14px,7px) scale(1)",
+  //       },
+  //       "&.MuiInputLabel-outlined ": {
+  //         transform: "translate(14px, 14px) scale(1)",
+
+  //         "&.MuiInputLabel-shrink": {
+  //           transform: "translate(14px, -7px) scale(0.75)",
+  //         },
+  //       },
+  //     },
+  //   },
+  //   defaultProps: {
+  //     margin: "dense",
+  //   },
+  // },
+
   MuiInputLabel: {
     styleOverrides: {
       asterisk: {

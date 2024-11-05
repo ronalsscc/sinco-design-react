@@ -288,29 +288,3 @@ export const paletteADC: PaletteOptions = {
   },
   ...BasicPalette
 };
-//  export const Chip: PaletteOptions = {
-//   chipInfo: {
-//     main: "#C0E8FC",
-//     dark: "#9CD8FA",
-//     light: "#E0F4FE",
-//     contrastText: "#5A5E73"
-//   },
-//   chipWarning: {
-//     main: "#FCE4C0",
-//     dark: "#FAD19C",
-//     light: "#F3F2F0",
-//     contrastText: "#5A5E73"
-//   },
-//   chipError: {
-//     main: "#FCD4D4",
-//     dark: "#F4B9B9",
-//     light: "#FEEAEA",
-//     contrastText: "#5A5E73"
-//   },
-//   chipSuccess: {
-//     main: "#DDF8C3",
-//     dark: "#C8F3A2",
-//     light: "#EFFCE2",
-//     contrastText: "#5A5E73"
-//   },
-//  }
